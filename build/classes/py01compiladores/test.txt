@@ -1,0 +1,62 @@
+glob:char:pi;
+glob:int:pi2; /*semantico*/
+glob:bool:pi3; /*semantico*/
+ 
+ 
+func:int:func1_
+	param:int:x22;
+	param:float:x23; //semantico borrar par�metro
+	loc:char:x24; //semantico x22
+	if (x22 <= 45 && x23 > 5.6)_ //semantico x22, var
+		loc:int:y;
+		x22=10; //error sem�ntico
+		glob:char:ch33='a';
+	_ else _
+		loc:int:y2; //no error duplicado en if-else
+		loc:string:str2="sdff";
+	_
+ 
+	return:-56; //cambio en retorno genera semantico
+_
+ 
+func:bool:func2_
+	param:bool:b1;
+	param:int:i1;
+	glob:char:ch24='a'; //semantico
+	return:false; //generar error con -6.5 y con i1
+_
+ 
+func:string:func3_ //semantico string
+	param:string:b1;
+	return:b1; 
+_
+ 
+ 
+func:int:main_
+/*
+Comentario 1
+*/
+	loc:int:t1 = 2;
+	loc:float:t2 = -2.0;
+	loc:char:t3 = 'd';
+	loc:string:t4 = "ds";
+	loc:bool:t5 = true;
+	loc:char:miChar = '!';
+	loc:char:miChar2 = '!!'; //semantico
+	loc:string:str1 = "Mi string 1";
+	loc:float:fl1 = 56.6; //semantico fl1
+ 
+	loc:int:in1 = t1-- * -14 / t1++ + 7 - 15; //semantico fl1, in1
+	loc:float:fl2 = 3.7 ^ fl1 + (45.6 % 76.3); //semantico literal 76
+ 
+//comentario 2
+        loc:int:arr[3];
+	in1 = 10 - arr[67] * func1 (in1, 45); //semantico func1, retorno func1 
+ 
+	fl1 = 4.5%fl2^-0.005; //semantico miChar
+	func2 (t5, in1 * in1 + 10); //semantico miFunc, hola
+	loc:bool:bl0 = 6.7 != 8.9; //ok
+ 
+	loc:bool:bl1 = in1 >= t1 || false && !(func1(3,in1) > 56); //semantico in1 >= fl1, func2
+	return:3; //semantico
+_

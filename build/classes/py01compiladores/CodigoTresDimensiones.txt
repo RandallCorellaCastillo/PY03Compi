@@ -1,0 +1,175 @@
+
+
+begin_globals_:
+global_data_String pi
+global_data_int pi2
+global_data_bool pi3
+
+begin_func_func1:
+Param x22
+Param x23
+local_data_String x24
+t1=x22
+t2=45
+t3=t1<=t2
+f4=x23
+f5=5.6
+t6=f4>f5
+t7=t3&&t6
+if t7 goto begin_if_1
+goto begin_end_if_1
+
+begin_if_1:
+local_data_int y
+t8=10
+t9 = t8
+x22 = t9
+t10=a
+global_data_String ch33
+ch33=t10
+
+begin_else_1:
+local_data_int y2
+t11=sdff
+local_data_String str2
+t12 = t11
+str2 = t12
+
+begin_end_else_1:
+
+begin_end_if_1:
+t13= -1
+t14=56
+t15=t13 * t14
+retorno = t15
+
+begin_func_func2:
+Param b1
+Param i1
+t1=a
+global_data_String ch24
+ch24=t1
+t2=false
+retorno = t2
+
+begin_func_func3:
+Param b1
+t1=b1
+retorno = t1
+
+begin_func_main: 
+t1=2
+local_data_int t1
+t2 = t1
+t1 = t2
+f3= -1
+f4=2.0
+f5=f3 * f4
+local_data_float t2
+t6 = f5
+t2 = t6
+t7=d
+local_data_String t3
+t8 = t7
+t3 = t8
+t9=ds
+local_data_String t4
+t10 = t9
+t4 = t10
+t11=true
+local_data_bool t5
+t12 = t11
+t5 = t12
+t13=!
+local_data_String miChar
+t14 = t13
+miChar = t14
+t15=!!
+local_data_String miChar2
+t16 = t15
+miChar2 = t16
+t17=Mi string 1
+local_data_String str1
+t18 = t17
+str1 = t18
+f19=56.6
+local_data_float fl1
+t20 = f19
+fl1 = t20
+t21= 1
+t22=t1
+t23=t21-t22
+t24= -1
+t25=14
+t26=t24 * t25
+t27=t23*t26
+t28= 1
+t29=t1
+t30=t28+t29
+t31=t27/t30
+t32=7
+t33=t31+t32
+t34=15
+t35=t33+t34
+local_data_int in1
+t36 = t35
+in1 = t36
+f37=3.7
+f38=fl1
+f39=f37^f38
+f40=45.6
+f41=76.3
+f42=f40%f41
+f43=f39+f42
+local_data_float fl2
+t44 = f43
+fl2 = t44
+local_data_arrayint arr
+t45=10
+t46= array arr, 67
+t47=in1
+t48=45
+t49= call begin_func_func1, 2
+t50=t46*t49
+t51=t45+t50
+t52 = t51
+in1 = t52
+f53=4.5
+f54=fl2
+f55=f53%f54
+f56= -1
+f57=0.005
+f58=f56 * f57
+f59=f55^f58
+t60 = f59
+fl1 = t60
+t61=t5
+t62=in1
+t63=in1
+t64=t62*t63
+t65=10
+t66=t64+t65
+t67= call begin_func_func2, 2
+f68=6.7
+f69=8.9
+t70=f68!=f69
+local_data_bool bl0
+t71 = t70
+bl0 = t71
+t72=in1
+t73=t1
+t74=t72>=t73
+t75=false
+t76=3
+t77=in1
+t78= call begin_func_func1, 2
+t79=56
+t80=t78>t79
+t81= !t80
+t82=t75&&t80
+t83=t74||t82
+local_data_bool bl1
+t84 = t83
+bl1 = t84
+t85=3
+retorno = t85
