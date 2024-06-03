@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 parser code {:
     // Connect this parser to a scanner!
     Lexer lex;
@@ -36,6 +37,8 @@ parser code {:
     int currentCase = 1;
     int currentDefault = 1;
     boolean firstCase = true;
+
+    int contArrayAsig = 0;
 
     int currentSwitchFlag = 1;
     String currentSwitchValue = "";
@@ -287,7 +290,7 @@ terminal            ENDLINE, BOOOLEANF, COMA;
 /* Non-terminals */
 non terminal String PROGRAMA, BODY, STATEMENT, EXP, ASIG, FUNCTION_STATEMENT, EXP_ARIT, VALUE, NUMBERS, EXP_REL, BOOL, LINE, FOR_STATEMENT, WHILE_STATEMENT, IF_STATEMENT, ELSE_STATEMENT, LINER, TERM, FACTOR, OPER_REL, EXP_REL_LOG;
 non terminal String EXP_LOG, OPER_LOG, OPERA_LOG, DECL, DECLOC, TYPES, INV_FUNC, INV_FUNC_DEF, PARAMS, PARAMETER, INV_ARRAY, VALUE_LIST, SWITCH_STATEMENT, CASE_LIST, PARAMDECL, EXP_ARIT_INTEGER, TERM_INTEGER, FACTOR_INTEGER, CASE_LIST_DEF;
-non terminal String PRINTLN, RETURN_STATEMENT, FUNC_STAT_DEF, BREAK_STATEMENT, INPUT_STATEMENT, IF_STATEMENT_DEF, IF_STATEMENT_CONTENT, ELSE_STATEMENT_CONTENT, WHILE_STATEMENT_DEF, FOR_STATEMENT_DEF, SWITCH_STATEMENT_DEF, DECLENDCASE;
+non terminal String PRINTLN, RETURN_STATEMENT, FUNC_STAT_DEF, BREAK_STATEMENT, INPUT_STATEMENT, IF_STATEMENT_DEF, IF_STATEMENT_CONTENT, ELSE_STATEMENT_CONTENT, WHILE_STATEMENT_DEF, FOR_STATEMENT_DEF, SWITCH_STATEMENT_DEF, DECLENDCASE, ASIG_ARRAY;
 
 /* Precedences */
 precedence left PLUS, MINUS;
@@ -317,6 +320,7 @@ LINE::=
 //Cuerpo de los statements.
 LINER::=
         ASIG
+      | ASIG_ARRAY
       | DECLOC
       | DECL
       | FOR_STATEMENT
@@ -760,6 +764,33 @@ OPERA_LOG ::= DISJUNTION:d {:RESULT = "bool:" +  d;:} | CONJUNTION:c {:RESULT = 
 
 //===============================================================================Asignaciones y declaraciones==================================================================
 //Asignacion de valores a una variable.
+ASIG_ARRAY ::= IDENTIFIER:ID EQ PARENTCA VALUE_LIST:vl PARENTCC ENDLINE {: 
+                                                String tipovar = getTipo(ID.toString());
+                                                String[] info = vl.split(":");
+                                                if(!info[0].equals("null")) {
+                                                    cod3D.append("\nAsig Array " + contArrayAsig);
+                                                    contArrayAsig = 0;
+                                                } else {
+                                                    System.out.println("Parser: Err : Los parametros no son compatibles con el tipo de array"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                }
+
+                                                :};
+ASIG_ARRAY ::= IDENTIFIER:ID PARENTCA EXP_ARIT:e1 PARENTCC EQ PARENTCA VALUE:v PARENTCC ENDLINE {:
+
+                                                String tipovar = getTipo(ID.toString());
+                                                String[] info = v.split(":");
+                                                String[] info2 = e1.split(":");
+                                                
+                                                if(info[0].equals(tipovar)) {
+                                                    cod3D.append("\nArrayElement " + info[1]);
+                                                    cod3D.append("\nAsigSingle " + ID.toString() + " " + info[1] + " " + info2[1]);
+                                                    contArrayAsig = 0;
+                                                } else {
+                                                    System.out.println("Parser: Err : Los parametros no son compatibles con el tipo de array"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                }
+
+                                                :};
+
 ASIG::= IDENTIFIER:ID EQ VALUE:v ENDLINE
                                 {: 
                                     String[] tipoAsig = v.split(":");
@@ -853,36 +884,48 @@ DECLOC::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID EQ VALUE:v ENDLINE {:
                                                                    } else {System.out.println("Parser: Err : Variable ya declarada: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));}
                                                                    :};
                                                                     
-DECLOC ::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID PARENTCA INTEGER_LITERAL PARENTCC ENDLINE 
+DECLOC ::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID PARENTCA EXP_ARIT:e1 PARENTCC ENDLINE 
                                                                                 {: 
-                                                                                    if(validarScopeVariablesGlobales(ID.toString())) {
-                                                                                        if (tloc.toString().equals("int") || tloc.toString().equals("char")){
-                                                                                            TablaSimbolos.get(currentHash).add("GlobArray: " + ID.toString() + ":" + tloc.toString());
-                                                                                            cod3D.append("\nlocal_data_array" + tloc.toString() + " " + ID.toString());
-                                                                                        }  
+                                                                                    String[] info = e1.toString().split(":");
+                                                                                    if(info[0].equals("int")) {
+                                                                                        if(validarScopeVariablesGlobales(ID.toString())) {
+                                                                                            if (tloc.toString().equals("int") || tloc.toString().equals("char")){
+                                                                                                TablaSimbolos.get(currentHash).add("LocalArray: " + ID.toString() + ":" + tloc.toString());
+                                                                                                cod3D.append("\nlocal_data_array" + tloc.toString() + " " + ID.toString());
+                                                                                            }  
+                                                                                            else {
+                                                                                                System.out.println("Parser: Err : El array solo permite ser de tipo int o char"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                            }
+                                                                                        } 
                                                                                         else {
-                                                                                            System.out.println("Parser: Err : El array solo permite ser de tipo int o char"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
-                                                                                        }
-                                                                                    } 
-                                                                                    else {
-                                                                                        System.out.println("Parser: Err : Variable global ya declarada: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
-                                                                                    } 
+                                                                                            System.out.println("Parser: Err : Variable global ya declarada: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                        } 
+                                                                                    } else {
+                                                                                        System.out.println("Parser: Err : El indice ingresado debe ser un resultado 'int' " + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                    }
+
                                                                                 :};
 
-DECLOC ::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID PARENTCA INTEGER_LITERAL PARENTCC EQ  PARENTCA VALUE_LIST:vl PARENTCC ENDLINE 
+DECLOC ::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID PARENTCA EXP_ARIT:e1 PARENTCC EQ  PARENTCA VALUE_LIST:vl PARENTCC ENDLINE 
                                                                                 {: 
-                                                                                    if(validarScopeVariablesGlobales(ID.toString())) {
-                                                                                        if (tloc.toString().equals("int") || tloc.toString().equals("char")){
-                                                                                            TablaSimbolos.get(currentHash).add("GlobArray: " + ID.toString() + ":" + tloc.toString());
-                                                                                            cod3D.append("\nlocal_data_array" + tloc.toString() + " " + ID.toString());
-                                                                                        }  
+                                                                                    String[] info = e1.toString().split(":");
+                                                                                    if(info[0].equals("int")) {
+                                                                                        if(validarScopeVariablesGlobales(ID.toString())) {
+                                                                                            if (tloc.toString().equals("int") || tloc.toString().equals("char")){
+                                                                                                TablaSimbolos.get(currentHash).add("GlobArray: " + ID.toString() + ":" + tloc.toString());
+                                                                                                cod3D.append("\nlocal_data_array" + tloc.toString() + " " + ID.toString());
+                                                                                            }  
+                                                                                            else {
+                                                                                                System.out.println("Parser: Err : El array solo permite ser de tipo int o char"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                            }
+                                                                                        } 
                                                                                         else {
-                                                                                            System.out.println("Parser: Err : El array solo permite ser de tipo int o char"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
-                                                                                        }
-                                                                                    } 
-                                                                                    else {
-                                                                                        System.out.println("Parser: Err : Variable global ya declarada: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
-                                                                                    } 
+                                                                                            System.out.println("Parser: Err : Variable global ya declarada: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                        } 
+                                                                                    } else {
+                                                                                        System.out.println("Parser: Err : El indice ingresado debe ser un resultado 'int' " + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                    }
+
                                                                                 :};
 
 TYPES::= CHAR {: RESULT = "String"; :} 
@@ -1062,9 +1105,12 @@ PARAMDECL ::= PARAM SEP TYPES:tparam SEP IDENTIFIER:ID ENDLINE {:
 //FIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
-INV_ARRAY ::= IDENTIFIER:ID PARENTCA INTEGER_LITERAL:i PARENTCC {:  RESULT = ID.toString() +":" + i.toString(); :};
+INV_ARRAY ::= IDENTIFIER:ID PARENTCA EXP_ARIT:e1 PARENTCC {:  
+                                                        RESULT = ID.toString() +":" + e1.toString(); 
+                                                        :};
 
 VALUE_LIST ::= VALUE:v COMA VALUE_LIST:vl {:
+                                            contArrayAsig++;
                                             String[] info1 = v.toString().split(":"); 
                                             String[] info2 = vl.toString().split(":"); 
                                             if(info1[0].toString().equals(info2[0])) { 
@@ -1073,8 +1119,12 @@ VALUE_LIST ::= VALUE:v COMA VALUE_LIST:vl {:
                                                 String miTempId = baseTemp + currentTemp++;
                                                 cod3D.append("\nArrayElement " + miTempId + " = " + info1[1]);
                                             }
-                                            else { RESULT = "null:null"; } :} 
+                                            else { 
+                                                RESULT = "null:null"; 
+                                                } 
+                                            :} 
                | VALUE:v {: RESULT = v; 
+                            contArrayAsig++;
                             String[] info1 = v.toString().split(":"); 
                             String baseTemp = "t";
                             String miTempId = baseTemp + currentTemp++;
@@ -1285,7 +1335,7 @@ CASE_LIST_DEF ::= CASE SEP EXP_ARIT:exp SEP {:
 //===============================================================================Estructuras de control End==================================================================
 
 //===============================================================================Return==================================================================
-RETURN_STATEMENT ::=  RETURN ENDLINE {: System.out.println("Parser: Err: El retorno no puede ser vacio."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1)); :};
+RETURN_STATEMENT ::=  RETURN ENDLINE {: cod3D.append("\nretorno = null"); :};
 RETURN_STATEMENT ::=  RETURN SEP VALUE:v ENDLINE {: 
                                                 
                                                 String[] info = v.toString().split(":"); 

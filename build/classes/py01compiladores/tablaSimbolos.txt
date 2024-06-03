@@ -28,7 +28,7 @@ variableLoc: str1:String
 variableLoc: fl1:float
 variableLoc: in1:int
 variableLoc: fl2:float
-GlobArray: arr:int
+LocalArray: arr:int
 variableLoc: bl0:bool
 variableLoc: bl1:bool
 

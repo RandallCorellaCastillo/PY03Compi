@@ -16,7 +16,7 @@ func:int:func1_
 		loc:string:str2="sdff";
 	_
  
-	return:-56; //cambio en retorno genera semantico
+	return; //cambio en retorno genera semantico
 _
  
 func:bool:func2_
@@ -51,6 +51,8 @@ Comentario 1
  
 //comentario 2
         loc:int:arr[3];
+        arr[1] = [4];
+        arr = [1,2,5, 3];
 	in1 = 10 - arr[67] * func1 (in1, 45); //semantico func1, retorno func1 
  
 	fl1 = 4.5%fl2^-0.005; //semantico miChar

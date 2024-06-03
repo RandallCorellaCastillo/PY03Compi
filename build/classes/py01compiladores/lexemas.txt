@@ -88,9 +88,6 @@ Token: 12 sdff
 Token: 55 ;
 Token: 54 _
 Token: 43 return
-Token: 25 :
-Token: 4 -
-Token: 10 56
 Token: 55 ;
 Token: 54 _
 Token: 45 func
@@ -264,6 +261,27 @@ Token: 52 [
 Token: 10 3
 Token: 53 ]
 Token: 55 ;
+Token: 11 arr
+Token: 52 [
+Token: 10 1
+Token: 53 ]
+Token: 16 =
+Token: 52 [
+Token: 10 4
+Token: 53 ]
+Token: 55 ;
+Token: 11 arr
+Token: 16 =
+Token: 52 [
+Token: 10 1
+Token: 57 ,
+Token: 10 2
+Token: 57 ,
+Token: 10 5
+Token: 57 ,
+Token: 10 3
+Token: 53 ]
+Token: 55 ;
 Token: 11 in1
 Token: 16 =
 Token: 10 10
@@ -339,4 +357,4 @@ Token: 25 :
 Token: 10 3
 Token: 55 ;
 Token: 54 _
-Cantidad de lexemas encontrados: 341
+Cantidad de lexemas encontrados: 359

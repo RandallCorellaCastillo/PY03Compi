@@ -38,10 +38,7 @@ str2 = t12
 begin_end_else_1:
 
 begin_end_if_1:
-t13= -1
-t14=56
-t15=t13 * t14
-retorno = t15
+retorno = null
 
 begin_func_func2:
 Param b1
@@ -124,52 +121,67 @@ f43=f39+f42
 local_data_float fl2
 t44 = f43
 fl2 = t44
+t45=3
 local_data_arrayint arr
-t45=10
-t46= array arr, 67
-t47=in1
-t48=45
-t49= call begin_func_func1, 2
-t50=t46*t49
-t51=t45+t50
-t52 = t51
-in1 = t52
-f53=4.5
-f54=fl2
-f55=f53%f54
-f56= -1
-f57=0.005
-f58=f56 * f57
-f59=f55^f58
-t60 = f59
-fl1 = t60
-t61=t5
-t62=in1
-t63=in1
-t64=t62*t63
-t65=10
-t66=t64+t65
-t67= call begin_func_func2, 2
-f68=6.7
-f69=8.9
-t70=f68!=f69
+t46=1
+t47=4
+ArrayElement t47
+AsigSingle arr t47 t46
+t48=1
+t49=2
+t50=5
+t51=3
+ArrayElement t52 = t51
+ArrayElement t53 = t50
+ArrayElement t54 = t49
+ArrayElement t55 = t48
+Asig Array 4
+t56=10
+t57=67
+t58= array arr, int
+t59=in1
+t60=45
+t61= call begin_func_func1, 2
+t62=t58*t61
+t63=t56+t62
+t64 = t63
+in1 = t64
+f65=4.5
+f66=fl2
+f67=f65%f66
+f68= -1
+f69=0.005
+f70=f68 * f69
+f71=f67^f70
+t72 = f71
+fl1 = t72
+t73=t5
+t74=in1
+t75=in1
+t76=t74*t75
+t77=10
+t78=t76+t77
+t79= call begin_func_func2, 2
+f80=6.7
+f81=8.9
+t82=f80!=f81
 local_data_bool bl0
-t71 = t70
-bl0 = t71
-t72=in1
-t73=t1
-t74=t72>=t73
-t75=false
-t76=3
-t77=in1
-t78= call begin_func_func1, 2
-t79=56
-t80=t78>t79
-t81= !t80
-t82=t75&&t80
-t83=t74||t82
+t83 = t82
+bl0 = t83
+t84=in1
+t85=t1
+t86=t84>=t85
+t87=false
+t88=3
+t89=in1
+t90= call begin_func_func1, 2
+t91=56
+t92=t90>t91
+t93= !t92
+t94=t87&&t92
+t95=t86||t94
 local_data_bool bl1
-t84 = t83
-bl1 = t84
-t85=3
-retorno = t85
+t96 = t95
+bl1 = t96
+t97=3
+retorno = t97
