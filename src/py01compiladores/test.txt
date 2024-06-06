@@ -7,6 +7,10 @@ func:int:func1_
 	param:int:x22;
 	param:float:x23; //semantico borrar par�metro
 	loc:char:x24; //semantico x22
+        x22++;
+        print(5+1);
+        print(true);
+        print("hols");
 	if (x22 <= 45 && x23 > 5.6)_ //semantico x22, var
 		loc:int:y;
 		x22=10; //error sem�ntico

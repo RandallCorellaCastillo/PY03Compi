@@ -38,10 +38,16 @@ parser code {:
     int currentDefault = 1;
     boolean firstCase = true;
 
+    boolean postOrden = false;
+    String currentPostOrden = "";
+    int currentTipePostOrden = 0;
+    List<Object[]> postOrdenList = new ArrayList<>();
+
     int contArrayAsig = 0;
 
     int currentSwitchFlag = 1;
     String currentSwitchValue = "";
+
 
     String currentWhileCon = "";
 
@@ -374,7 +380,7 @@ EXP_ARIT    ::=
                                                     if(info1[0].equals("float")) { baseTemp = "f";}
 
                                                     String miTempId = baseTemp + currentTemp++;
-                                                    cod3D.append("\n" + miTempId + "=" + info1[1] + "+" + info2[1]);
+                                                    cod3D.append("\n" + miTempId + "=" + info1[1] + "-" + info2[1]);
 
                                                     RESULT = info1[0] +  ":" +  miTempId;}:}
               | TERM:t {: 
@@ -471,12 +477,12 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
 
             | STRING_LITERAL:s {:
                                 String miTempId = "t"+currentTemp++;
-                                cod3D.append("\n" +  miTempId + "=" + s.toString());
+                                cod3D.append("\n" +  miTempId + "= '" + s.toString() + "'");
                                 RESULT = "String:" + miTempId; 
                                :}
             | STRING_SINGLE:s {:
                                 String miTempId = "t"+currentTemp++;
-                                cod3D.append("\n" +  miTempId + "=" + s.toString());
+                                cod3D.append("\n" +  miTempId + "='" + s.toString() + "'");
                                 RESULT = "String:" + miTempId;
                               :}
 
@@ -495,14 +501,24 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
             | IDENTIFIER:i MINUSM {: String tipo = getTipo(i.toString()); if(validarUsoVariable(i.toString())) {
                                                                                 String baseTemp = "t";
                                                                                 if (tipo.equals("float")) baseTemp = "f";
-                                                                                String miTempId1 = baseTemp + currentTemp++;
-                                                                                String miTempId2 = baseTemp + currentTemp++;
-                                                                                String miTempId3 = baseTemp + currentTemp++;
-                                                                                
-                                                                                cod3D.append("\n" + miTempId1 + "= 1");
-                                                                                cod3D.append("\n" + miTempId2 + "=" + i.toString());
-                                                                                cod3D.append("\n" + miTempId3 + "=" + miTempId1 + "-" + miTempId2);
-                                                                                RESULT = tipo +  ":" + miTempId3;
+                                                                                if(tipo.equals("float") || tipo.equals("int")) {
+                                                                                    postOrden = true;
+                                                                                    currentTipePostOrden = 1;
+                                                                                    String miTempId = baseTemp + currentTemp++;
+                                                                                    currentPostOrden = miTempId;
+                                                                                    cod3D.append("\n" + miTempId + " = " + i.toString());
+
+                                                                                    Object[] dataArray = new Object[3];
+                                                                                    dataArray[0] = postOrden;
+                                                                                    dataArray[1] = currentTipePostOrden;
+                                                                                    dataArray[2] = currentPostOrden;
+                                                                                    postOrdenList.add(dataArray);
+
+                                                                                    RESULT = tipo +  ":" + miTempId;
+                                                                                } else {
+                                                                                  System.out.println("Parser: Err: La variable no es un numero entero o flotante: " + i.toString() + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));  
+                                                                                  RESULT = "null:null";
+                                                                                }
                                                                            }
                                                                            else { System.out.println("Parser: Err: La variable no existe: " + i.toString() + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                                              RESULT = "null:null";} :}
@@ -511,14 +527,24 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
                                                                             
                                                                             String baseTemp = "t";
                                                                             if (tipo.equals("float")) baseTemp = "f";
-                                                                            String miTempId1 = baseTemp + currentTemp++;
-                                                                            String miTempId2 = baseTemp + currentTemp++;
-                                                                            String miTempId3 = baseTemp + currentTemp++;
-                                                                            
-                                                                            cod3D.append("\n" + miTempId1 + "= 1");
-                                                                            cod3D.append("\n" + miTempId2 + "=" + i.toString());
-                                                                            cod3D.append("\n" + miTempId3 + "=" + miTempId1 + "+" + miTempId2);
-                                                                            RESULT = tipo +  ":" + miTempId3;
+                                                                            if(tipo.equals("float") || tipo.equals("int")) {
+                                                                                postOrden = true;
+                                                                                currentTipePostOrden = 0;
+                                                                                String miTempId = baseTemp + currentTemp++;
+                                                                                currentPostOrden = miTempId;
+                                                                                cod3D.append("\n" + miTempId + " = " + i.toString());
+
+                                                                                Object[] dataArray = new Object[3];
+                                                                                dataArray[0] = postOrden;
+                                                                                dataArray[1] = currentTipePostOrden;
+                                                                                dataArray[2] = currentPostOrden;
+                                                                                postOrdenList.add(dataArray);
+
+                                                                                RESULT = tipo +  ":" + miTempId;
+                                                                            } else {
+                                                                                  System.out.println("Parser: Err: La variable no es un numero entero o flotante: " + i.toString() + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                                                  RESULT = "null:null";  
+                                                                            }
                                                                          }
                                                                     else { System.out.println("Parser: Err: La variable no existe: " + i.toString() + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                                       RESULT = "null:null";} :}
@@ -584,7 +610,10 @@ FACTOR_INTEGER  ::=  PARENTA EXP_ARIT_INTEGER PARENTC
 
 //===============================================================================Expresiones relacionales==================================================================
 //operaciones relacionales logicas.
-EXP_REL_LOG ::= EXP_REL:e1 {:RESULT = e1;:} | EXP_LOG:e2 {:RESULT = e2; :};
+EXP_REL_LOG ::= EXP_REL:e1 {:
+                            RESULT = e1;
+                            :} 
+                | EXP_LOG:e2 {:RESULT = e2;:};
 
 EXP_REL    ::= EXP_ARIT:e1    OPER_REL:op    EXP_ARIT:e2 {:
                                                         //System.out.println(e1.toString());
@@ -624,7 +653,27 @@ EXP_REL    ::= EXP_ARIT:e1    OPER_REL:op    EXP_ARIT:e2 {:
                         :};
 
 //Operador logico.
-EXP_LOG ::= OPER_LOG:op1 {:RESULT = op1;:} 
+EXP_LOG ::= OPER_LOG:op1 {: RESULT = op1;
+                            for (Object[] data : postOrdenList) {
+                                for (Object element : data) {
+                                    postOrden = (boolean) data[0];
+                                    currentTipePostOrden = (int) data[1];
+                                    currentPostOrden = (String) data[2];
+                                    String miTempId =  currentPostOrden.split("")[0] + currentTemp++;
+
+                                    if(currentTipePostOrden == 0) {
+                                        cod3D.append("\n" + miTempId + " = 1");
+                                        cod3D.append("\n" + currentPostOrden + " = " + currentPostOrden + " + " + miTempId);
+                                    } else {
+                                        cod3D.append("\n" + miTempId + " = 1");
+                                        cod3D.append("\n" + currentPostOrden + " = " + currentPostOrden + " - " + miTempId);
+                                    }
+                                    break;
+                                    
+                                }
+                            }
+                            postOrdenList.clear();
+                        :} 
           | EXP_REL:e1  OPERA_LOG:op1 EXP_REL_LOG:e2  {:  
                                                     String[] info1 = e1.toString().split(":");
                                                     String[] info2 = e2.toString().split(":");
@@ -1094,7 +1143,10 @@ PARAMS ::= PARAMETER:v COMA PARAMS
                                 :};
 PARAMS ::= PARAMETER:v;
 
-PARAMETER ::= VALUE:v{: contar++; RESULT = v; :};
+PARAMETER ::= VALUE:v{: contar++; RESULT = v;
+                        String[] info = v.toString().split(":");
+                        cod3D.append("\nParametro " + info[1]);
+                    :};
 
 PARAMDECL ::= PARAM SEP TYPES:tparam SEP IDENTIFIER:ID ENDLINE {: 
                                                                 TablaSimbolos.get(currentHash).add("parametro : "+ ID.toString() + ":" + tparam.toString());
@@ -1132,16 +1184,23 @@ VALUE_LIST ::= VALUE:v COMA VALUE_LIST:vl {:
 
 
 PRINTLN ::= PRINTF PARENTA PARENTC ENDLINE {: cod3D.append("\nprint '\n'");:} ;
-PRINTLN ::= PRINTF PARENTA STRING_LITERAL:s PARENTC ENDLINE {: cod3D.append("\nprint '" + s.toString() + "'");:} ;
-PRINTLN ::= PRINTF PARENTA STRING_SINGLE:s PARENTC ENDLINE {: cod3D.append("\nprint '" + s.toString() + "'");:} ;
-PRINTLN ::= PRINTF PARENTA IDENTIFIER:id PARENTC ENDLINE {: cod3D.append("\nprint " + id.toString());:};
+//PRINTLN ::= PRINTF PARENTA STRING_LITERAL:s PARENTC ENDLINE {: cod3D.append("\nprint '" + s.toString() + "'");:} ;
+//PRINTLN ::= PRINTF PARENTA STRING_SINGLE:s PARENTC ENDLINE {: cod3D.append("\nprint '" + s.toString() + "'");:} ;
+//PRINTLN ::= PRINTF PARENTA IDENTIFIER:id PARENTC ENDLINE {: cod3D.append("\nprint " + id.toString());:};
+
+PRINTLN ::= PRINTF PARENTA VALUE:v1 PARENTC ENDLINE {: 
+                                                    String[] info1 = v1.toString().split(":"); 
+                                                    cod3D.append("\nprint " + info1[1]);
+                                                    :};
 
 
 
 
 //FIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-INPUT_STATEMENT ::= READ PARENTA IDENTIFIER:id PARENTC ENDLINE {: :}; 
+INPUT_STATEMENT ::= READ PARENTA IDENTIFIER:id PARENTC ENDLINE {:
+                                                                cod3D.append("\nread " + id.toString());
+                                                                :}; 
 
 
 //===============================================================================Funciones End==================================================================
