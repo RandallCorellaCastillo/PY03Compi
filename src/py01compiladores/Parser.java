@@ -2126,9 +2126,7 @@ class CUP$Parser$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
                                                 String[] info = e.toString().split(":");
-                                                String baseTemp = "t";
-                                                String miTempId = baseTemp + currentTemp++;
-                                                cod3D.append("\n" + miTempId + "= !" + info[1] );
+                                                cod3D.append("\n" + info[1] + "= !" + info[1] );
                                                 RESULT = info[0] +  ":" + info[1];
                                             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("EXP_REL",9, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -3306,7 +3304,7 @@ class CUP$Parser$actions {
             {
               String RESULT =null;
 		
-                                                                        cod3D.append("\n\nbegin_end_if_" + (currentIf - 1) +  ":"); 
+                                                                    cod3D.append("\n\nbegin_end_if_" + (currentIf - 1) +  ":");
                                                                      
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IF_STATEMENT_DEF",45, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -3321,10 +3319,15 @@ class CUP$Parser$actions {
 		String exp = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
                                                 String[] info = exp.toString().split(":");
-                                                currentStructure = "if"; 
-                                                cod3D.append("\nif " + info[1] +  " goto begin_if_" + (currentIf));
-                                                cod3D.append("\ngoto " + "begin_end_if_" + (currentIf));
-                                                cod3D.append("\n\nbegin_if_" + currentIf++ +  ":"); 
+                                                if(info[0].equals("bool")) {
+                                                    currentStructure = "if"; 
+                                                    cod3D.append("\nif " + info[1] +  " goto begin_if_" + (currentIf));
+                                                    cod3D.append("\ngoto " + "begin_end_if_" + (currentIf));
+                                                    cod3D.append("\n\nbegin_if_" + currentIf++ +  ":"); 
+                                                } else {
+                                                     System.out.println("Parser: Err: El valor del if debe ser booleano."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                }
+                                                
                                                 //cod3D.append();
                                                 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IF_STATEMENT",14, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -3335,7 +3338,9 @@ class CUP$Parser$actions {
           case 126: // IF_STATEMENT_CONTENT ::= UNDERS LINE UNDERS 
             {
               String RESULT =null;
-
+		
+                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1) +  ":");
+                                            
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IF_STATEMENT_CONTENT",46, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -3345,7 +3350,7 @@ class CUP$Parser$actions {
             {
               String RESULT =null;
 		
-                                                                
+                                                                cod3D.append("\ngoto begin_end_else_" + (currentIf - 1) +  ":");
                                                                 cod3D.append("\n\nbegin_end_else_" + (currentElse - 1) +  ":");
                                                                 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("ELSE_STATEMENT",15, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -3411,14 +3416,16 @@ class CUP$Parser$actions {
 		int exp1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
 		int exp1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String exp1 = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
-		 
+		
+                                                                    currentStructure = "for"; 
                                                                     String[] info = exp1.toString().split(":");
                                                                     if (info[0].equals("int")) {
-                                                                        cod3D.append("\n\nbegin_for_" + currentFor++ +  ":");
+                                                                        cod3D.append("\n\nbegin_for_" + currentFor +  ":");
                                                                         cod3D.append("\ndataint cant");
                                                                         cod3D.append("\ndataint cont");
                                                                         cod3D.append("\ncant =" + info[1]);
                                                                         cod3D.append("\ncont = 0");
+                                                                        cod3D.append("\n\nbegin_for_body_" + currentFor++ +  ":");
 
                                                                     } else {
                                                                         System.out.println("Parser: Err: El valor de los parametros del for deben ser enteros."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
@@ -3440,16 +3447,17 @@ class CUP$Parser$actions {
 		int exp2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String exp2 = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 
+                                                                    currentStructure = "for";
                                                                     String[] info1 = exp1.toString().split(":");
                                                                     String[] info2 = exp2.toString().split(":");
                                                                     if (info1[0].equals("int") && info2[0].equals("int")) {
-                                                                        cod3D.append("\n\nbegin_for_" + currentFor++ +  ":");
+                                                                        cod3D.append("\n\nbegin_for_" + currentFor +  ":");
                                                                         cod3D.append("\ndataint cant");
                                                                         cod3D.append("\ndataint cont");
                                                                         cod3D.append("\ndataint init");
                                                                         cod3D.append("\ncant " + info1[1]);
-                                                                        cod3D.append("\ncont = 0");
-                                                                        cod3D.append("\ninit " + info2[1]);
+                                                                        cod3D.append("\ncont = " + info2[1]);
+                                                                        cod3D.append("\n\nbegin_for_body_" + currentFor++ +  ":");
                                                                     } else {
                                                                         System.out.println("Parser: Err: El valor de los parametros del for deben ser enteros."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                                     }
@@ -3472,22 +3480,22 @@ class CUP$Parser$actions {
 		int exp3left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
 		int exp3right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String exp3 = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
-		 
+		
+                                                                    currentStructure = "for";
                                                                     String[] info1 = exp1.toString().split(":");
                                                                     String[] info2 = exp2.toString().split(":");
                                                                     String[] info3 = exp3.toString().split(":");
                                                                     if (info1[0].equals("int") && info2[0].equals("int") && info3[0].equals("int")) {
-                                                                        cod3D.append("\n\nbegin_for_" + currentFor++ +  ":");
-                                                                        
+                                                                        cod3D.append("\n\nbegin_for_" + currentFor +  ":");
                                                                         cod3D.append("\ndataint cant");
                                                                         cod3D.append("\ndataint cont");
                                                                         cod3D.append("\ndataint init");
                                                                         cod3D.append("\ndataint jump");
-
                                                                         cod3D.append("\ncant =" + info1[1]);
                                                                         cod3D.append("\ncont = " + info2[1]);
-                                                                        cod3D.append("\ninit =" + info2[1]);
                                                                         cod3D.append("\njump =" + info3[1]);
+
+                                                                        cod3D.append("\n\nbegin_for_body_" + currentFor++ +  ":");
                                                                     } else {
                                                                         System.out.println("Parser: Err: El valor de los parametros del for deben ser enteros."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                                     }
@@ -3506,20 +3514,26 @@ class CUP$Parser$actions {
 		String fsd = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-3)).value;
 		
                                                             String[] info = fsd.toString().split(":");
-                                                            currentStructure = "for";
+
+                                                            String baseTemp = "t";
+                                                            String miTempId = baseTemp + currentTemp++;
+
                                                             if(info[1].equals("null")) {
                                                                 cod3D.append("\nt" +  currentTemp++ + " = 1");
-                                                                cod3D.append("\nt" +  currentTemp++ + " = " + info[0] +  " + t" + (currentTemp - 2));
-                                                                cod3D.append("\n" +  info[0] + " = t" + (currentTemp - 1));
-                                                                cod3D.append("\nif " + info[0] +  " != cont goto begin_for_" + (currentFor - 1));
-                                                                cod3D.append("\ngoto end_for_" + (currentFor - 1));
-                                                                cod3D.append("\nend_for_" + (currentFor - 1) +  ":");
+                                                                cod3D.append("\n" +  miTempId + " = cont");
+                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\ncont = " + miTempId);
+                                                                cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
+                                                                cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
+                                                                cod3D.append("\n\nend_for_" + (currentFor - 1) +  ":");
                                                             } else {
-                                                                cod3D.append("\nt" +  currentTemp++ + " = " + info[0] +  " + " + info[1]);
-                                                                cod3D.append("\n" +  info[0] + " = " + (currentTemp - 1));
-                                                                cod3D.append("\nif " + info[0] +  " != cont goto begin_for_" + (currentFor - 1));
-                                                                cod3D.append("\ngoto end_for_" + (currentFor - 1));
-                                                                cod3D.append("\nend_for_" + (currentFor - 1) +  ":");
+                                                                cod3D.append("\nt" +  currentTemp++ + " = jump");
+                                                                cod3D.append("\n" +  miTempId + " = cont");
+                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\ncont = " + miTempId);
+                                                                cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
+                                                                cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
+                                                                cod3D.append("\n\nend_for_" + (currentFor - 1) +  ":");
                                                             }
 
                                                             

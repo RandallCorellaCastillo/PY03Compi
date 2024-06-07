@@ -636,9 +636,7 @@ EXP_REL    ::= EXP_ARIT:e1    OPER_REL:op    EXP_ARIT:e2 {:
             | PARENTA EXP_REL:e PARENTC {:RESULT = e;:}
             | NOT PARENTA EXP_REL:e PARENTC {:
                                                 String[] info = e.toString().split(":");
-                                                String baseTemp = "t";
-                                                String miTempId = baseTemp + currentTemp++;
-                                                cod3D.append("\n" + miTempId + "= !" + info[1] );
+                                                cod3D.append("\n" + info[1] + "= !" + info[1] );
                                                 RESULT = info[0] +  ":" + info[1];
                                             :}
             | MINUS PARENTA EXP_REL_LOG:e PARENTC {:RESULT = e;:}
@@ -1209,23 +1207,30 @@ INPUT_STATEMENT ::= READ PARENTA IDENTIFIER:id PARENTC ENDLINE {:
 //===============================================================================Estructuras de control==================================================================
 
 IF_STATEMENT_DEF ::= IF_STATEMENT IF_STATEMENT_CONTENT ELSE_STATEMENT {:
-                                                                        cod3D.append("\n\nbegin_end_if_" + (currentIf - 1) +  ":"); 
+                                                                    cod3D.append("\n\nbegin_end_if_" + (currentIf - 1) +  ":");
                                                                      :};
 //Declaracion de IF.
 IF_STATEMENT ::= IF PARENTA EXP_REL_LOG:exp PARENTC {:
                                                 String[] info = exp.toString().split(":");
-                                                currentStructure = "if"; 
-                                                cod3D.append("\nif " + info[1] +  " goto begin_if_" + (currentIf));
-                                                cod3D.append("\ngoto " + "begin_end_if_" + (currentIf));
-                                                cod3D.append("\n\nbegin_if_" + currentIf++ +  ":"); 
+                                                if(info[0].equals("bool")) {
+                                                    currentStructure = "if"; 
+                                                    cod3D.append("\nif " + info[1] +  " goto begin_if_" + (currentIf));
+                                                    cod3D.append("\ngoto " + "begin_end_if_" + (currentIf));
+                                                    cod3D.append("\n\nbegin_if_" + currentIf++ +  ":"); 
+                                                } else {
+                                                     System.out.println("Parser: Err: El valor del if debe ser booleano."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
+                                                }
+                                                
                                                 //cod3D.append();
                                                 :};
 
-IF_STATEMENT_CONTENT ::= UNDERS LINE UNDERS ;
+IF_STATEMENT_CONTENT ::= UNDERS LINE UNDERS {:
+                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1) +  ":");
+                                            :};
 
 
 ELSE_STATEMENT ::=  ELSE_STATEMENT_CONTENT UNDERS LINE UNDERS  {:
-                                                                
+                                                                cod3D.append("\ngoto begin_end_else_" + (currentIf - 1) +  ":");
                                                                 cod3D.append("\n\nbegin_end_else_" + (currentElse - 1) +  ":");
                                                                 :} | ;
 
@@ -1248,14 +1253,16 @@ WHILE_STATEMENT_DEF ::= WHILE PARENTA EXP_REL_LOG:exp PARENTC {:
                                                 cod3D.append("\n\nbegin_while_" + currentWhile++ +  ":"); 
                                                             :};
 
-FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 PARENTC {: 
+FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 PARENTC {:
+                                                                    currentStructure = "for"; 
                                                                     String[] info = exp1.toString().split(":");
                                                                     if (info[0].equals("int")) {
-                                                                        cod3D.append("\n\nbegin_for_" + currentFor++ +  ":");
+                                                                        cod3D.append("\n\nbegin_for_" + currentFor +  ":");
                                                                         cod3D.append("\ndataint cant");
                                                                         cod3D.append("\ndataint cont");
                                                                         cod3D.append("\ncant =" + info[1]);
                                                                         cod3D.append("\ncont = 0");
+                                                                        cod3D.append("\n\nbegin_for_body_" + currentFor++ +  ":");
 
                                                                     } else {
                                                                         System.out.println("Parser: Err: El valor de los parametros del for deben ser enteros."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
@@ -1264,38 +1271,39 @@ FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 
                                                                     :};
 
 FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 COMA EXP_ARIT:exp2 PARENTC {: 
+                                                                    currentStructure = "for";
                                                                     String[] info1 = exp1.toString().split(":");
                                                                     String[] info2 = exp2.toString().split(":");
                                                                     if (info1[0].equals("int") && info2[0].equals("int")) {
-                                                                        cod3D.append("\n\nbegin_for_" + currentFor++ +  ":");
+                                                                        cod3D.append("\n\nbegin_for_" + currentFor +  ":");
                                                                         cod3D.append("\ndataint cant");
                                                                         cod3D.append("\ndataint cont");
                                                                         cod3D.append("\ndataint init");
                                                                         cod3D.append("\ncant " + info1[1]);
-                                                                        cod3D.append("\ncont = 0");
-                                                                        cod3D.append("\ninit " + info2[1]);
+                                                                        cod3D.append("\ncont = " + info2[1]);
+                                                                        cod3D.append("\n\nbegin_for_body_" + currentFor++ +  ":");
                                                                     } else {
                                                                         System.out.println("Parser: Err: El valor de los parametros del for deben ser enteros."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                                     }
                                                                     RESULT = info1[1] + ":null";
                                                                     :};
 
-FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 COMA EXP_ARIT:exp2 COMA EXP_ARIT:exp3 PARENTC {: 
+FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 COMA EXP_ARIT:exp2 COMA EXP_ARIT:exp3 PARENTC {:
+                                                                    currentStructure = "for";
                                                                     String[] info1 = exp1.toString().split(":");
                                                                     String[] info2 = exp2.toString().split(":");
                                                                     String[] info3 = exp3.toString().split(":");
                                                                     if (info1[0].equals("int") && info2[0].equals("int") && info3[0].equals("int")) {
-                                                                        cod3D.append("\n\nbegin_for_" + currentFor++ +  ":");
-                                                                        
+                                                                        cod3D.append("\n\nbegin_for_" + currentFor +  ":");
                                                                         cod3D.append("\ndataint cant");
                                                                         cod3D.append("\ndataint cont");
                                                                         cod3D.append("\ndataint init");
                                                                         cod3D.append("\ndataint jump");
-
                                                                         cod3D.append("\ncant =" + info1[1]);
                                                                         cod3D.append("\ncont = " + info2[1]);
-                                                                        cod3D.append("\ninit =" + info2[1]);
                                                                         cod3D.append("\njump =" + info3[1]);
+
+                                                                        cod3D.append("\n\nbegin_for_body_" + currentFor++ +  ":");
                                                                     } else {
                                                                         System.out.println("Parser: Err: El valor de los parametros del for deben ser enteros."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                                     }
@@ -1305,20 +1313,26 @@ FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 
 
 FOR_STATEMENT ::= FOR_STATEMENT_DEF:fsd UNDERS LINE UNDERS {:
                                                             String[] info = fsd.toString().split(":");
-                                                            currentStructure = "for";
+
+                                                            String baseTemp = "t";
+                                                            String miTempId = baseTemp + currentTemp++;
+
                                                             if(info[1].equals("null")) {
                                                                 cod3D.append("\nt" +  currentTemp++ + " = 1");
-                                                                cod3D.append("\nt" +  currentTemp++ + " = " + info[0] +  " + t" + (currentTemp - 2));
-                                                                cod3D.append("\n" +  info[0] + " = t" + (currentTemp - 1));
-                                                                cod3D.append("\nif " + info[0] +  " != cont goto begin_for_" + (currentFor - 1));
-                                                                cod3D.append("\ngoto end_for_" + (currentFor - 1));
-                                                                cod3D.append("\nend_for_" + (currentFor - 1) +  ":");
+                                                                cod3D.append("\n" +  miTempId + " = cont");
+                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\ncont = " + miTempId);
+                                                                cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
+                                                                cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
+                                                                cod3D.append("\n\nend_for_" + (currentFor - 1) +  ":");
                                                             } else {
-                                                                cod3D.append("\nt" +  currentTemp++ + " = " + info[0] +  " + " + info[1]);
-                                                                cod3D.append("\n" +  info[0] + " = " + (currentTemp - 1));
-                                                                cod3D.append("\nif " + info[0] +  " != cont goto begin_for_" + (currentFor - 1));
-                                                                cod3D.append("\ngoto end_for_" + (currentFor - 1));
-                                                                cod3D.append("\nend_for_" + (currentFor - 1) +  ":");
+                                                                cod3D.append("\nt" +  currentTemp++ + " = jump");
+                                                                cod3D.append("\n" +  miTempId + " = cont");
+                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\ncont = " + miTempId);
+                                                                cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
+                                                                cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
+                                                                cod3D.append("\n\nend_for_" + (currentFor - 1) +  ":");
                                                             }
 
                                                             :};
