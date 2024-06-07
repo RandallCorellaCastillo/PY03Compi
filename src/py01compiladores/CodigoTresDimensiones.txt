@@ -1,7 +1,9 @@
 
 
 begin_globals_:
+t1= '3'
 global_data_String pi
+pi=t1
 global_data_int pi2
 global_data_bool pi3
 
@@ -10,85 +12,85 @@ Param x22
 Param x23
 local_data_String x24
 local_data_bool x275
-t1 = x22
-t2 = 1
-t1 = t1 + t2
-t3=5
-t4=pi2
-t5=t3+t4
-print t5
-t6=true
+t2 = x22
+t3 = 1
+t2 = t2 + t3
+t4=5
+t5=pi2
+t6=t4+t5
 print t6
-t7=1
+t7=true
+print t7
+t8=1
 
 begin_switch_1:
-t8 = t7
+t9 = t8
 dataint flag
-t9 = 0
-flag = t9
-t10=1
-t11 = flag
-t12 = 1
-if t12 == t11 goto begin_case_11
-if t10==t7 goto begin_case_11
+t10 = 0
+flag = t10
+t11=1
+t12 = flag
+t13 = 1
+if t13 == t12 goto begin_case_11
+if t11==t8 goto begin_case_11
 goto end_case_11
 
 begin_case_11
-t13 = 1
-flag = t13
-t14= '!#'
-print t14
+t14 = 1
+flag = t14
+t15= '!#'
+print t15
 end_case_11:
-t15=2
-t16 = flag
-t17 = 1
-if t17 == t16 goto begin_case_12
-if t15==t7 goto begin_case_12
+t16=2
+t17 = flag
+t18 = 1
+if t18 == t17 goto begin_case_12
+if t16==t8 goto begin_case_12
 goto end_case_12
 
 begin_case_12
-t18 = 1
-flag = t18
-t19=10
-t20=pi2
-t21=t19+t20
+t19 = 1
+flag = t19
+t20=10
+t21=pi2
+t22=t20+t21
 local_data_int otra
-t22 = t21
-otra = t22
+t23 = t22
+otra = t23
 goto end_switch_1
 end_case_12:
-t23= -1
-t24=10
-t25=t23 * t24
-t26= -1
-t27=1
-t28=t26 * t27
-t29=t25*t28
-t30 = t29
-otra = t30
+t24= -1
+t25=10
+t26=t24 * t25
+t27= -1
+t28=1
+t29=t27 * t28
+t30=t26*t29
+t31 = t30
+otra = t31
 
 begin_default_11:
 
 end_switch_1:
-t31=3
+t32=3
 
 begin_switch_2:
-t32 = t31
+t33 = t32
 dataint flag
-t33 = 0
-flag = t33
-t34=10
-t35 = flag
-t36 = 1
-if t36 == t35 goto begin_case_21
-if t34==t31 goto begin_case_21
+t34 = 0
+flag = t34
+t35=10
+t36 = flag
+t37 = 1
+if t37 == t36 goto begin_case_21
+if t35==t32 goto begin_case_21
 goto end_case_21
 
 begin_case_21
-t37 = 1
-flag = t37
-t38= 'un case'
-print t38
+t38 = 1
+flag = t38
+t39= 'un case'
+print t39
 
 end_switch_2:
 retorno = null

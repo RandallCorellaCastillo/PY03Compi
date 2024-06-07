@@ -110,6 +110,19 @@ public class PY01Compiladores {
         }
     }
     
+    public static String leerArchivo(String ruta) {
+        StringBuilder contenido = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                contenido.append(linea).append("\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+            return null;
+        }
+        return contenido.toString();
+    }
     
     
     public static void main(String[] args) throws SilentExit, Exception {
@@ -146,6 +159,22 @@ public class PY01Compiladores {
         String path4 = currentDirectory + "\\src\\py01compiladores\\lexemas.txt";
         saveLexems(lexemas, path4);
         runParser(path3);  
+        
+
+
+        //PY3
+        String rutaDelArchivo = currentDirectory + "\\src\\py01compiladores\\CodigoTresDimensiones.txt";
+        generadorMIPS generador = new generadorMIPS(rutaDelArchivo);
+        List<String> lineasDelArchivo = generador.getLineas();
+        generador.dataGeneratorVariables();
+        generador.textGenerator();
+        generador.macrosGenerator();
+        generador.textTostring();
+        
+        /*
+        for (String linea : lineasDelArchivo) {
+            System.out.println(linea);
+        }*/
         
     }
 }

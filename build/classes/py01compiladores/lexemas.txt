@@ -3,6 +3,8 @@ Token: 25 :
 Token: 29 char
 Token: 25 :
 Token: 11 pi
+Token: 16 =
+Token: 12 3
 Token: 55 ;
 Token: 41 glob
 Token: 25 :
@@ -387,4 +389,4 @@ Token: 25 :
 Token: 10 3
 Token: 55 ;
 Token: 54 _
-Cantidad de lexemas encontrados: 389
+Cantidad de lexemas encontrados: 391

@@ -1,4 +1,4 @@
-glob:char:pi;
+glob:char:pi = "3";
 glob:int:pi2; /*semantico*/
 glob:bool:pi3; /*semantico*/
  
