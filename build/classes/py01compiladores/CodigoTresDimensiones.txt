@@ -14,95 +14,79 @@ t1 = x22
 t2 = 1
 t1 = t1 + t2
 t3=5
-t4=1
+t4=pi2
 t5=t3+t4
 print t5
 t6=true
 print t6
+t7=1
 
-begin_while_1:
-t7=x275
-if t7 goto begin_while_block_1
-goto begin_end_while_1
+begin_switch_1:
+t8 = t7
+dataint flag
+t9 = 0
+flag = t9
+t10=1
+t11 = flag
+t12 = 1
+if t12 == t11 goto begin_case_11
+if t10==t7 goto begin_case_11
+goto end_case_11
 
-begin_while_block_1:
-t8=4
-print t8
-goto begin_while_1
+begin_case_11
+t13 = 1
+flag = t13
+t14= '!#'
+print t14
+end_case_11:
+t15=2
+t16 = flag
+t17 = 1
+if t17 == t16 goto begin_case_12
+if t15==t7 goto begin_case_12
+goto end_case_12
 
-begin_end_while_1:
-t9=4
-t10=5
-t11=t9<t10
-if t11 goto begin_if_1
-goto begin_else_1
-
-begin_if_1:
-t12=5
-print t12
-goto begin_end_if_1
-
-begin_else_1:
-
-begin_end_if_1:
-t13= 'hols'
-print t13
-t14=10
-t15=4
-t16=3
-
-begin_for_1:
-dataint cant
-dataint cont
-dataint init
-dataint jump
-cant =t14
-cont = t15
-jump =t16
-
-begin_for_body_1:
-t17=4
-print t17
-t19 = jump
-t18 = cont
-t18 = t18 + t19
-cont = t18
-if t18 <= cant goto begin_for_body_1
-
-goto end_for_1
-
-end_for_1:
-t20=x22
-t21=45
-t22=t20<=t21
-f23=x23
-f24=5.6
-t25=f23>f24
-t26=t22&&t25
-if t26 goto begin_if_2
-goto begin_else_2
-
-begin_if_2:
-local_data_int y
-t27=10
+begin_case_12
+t18 = 1
+flag = t18
+f19=10.1
+t20=pi2
+goto end_switch_1
+end_case_12:
+t21= -1
+t22=10
+t23=t21 * t22
+t24= -1
+t25=1
+t26=t24 * t25
+t27=t23*t26
 t28 = t27
-x22 = t28
-t29='a'
-global_data_String ch33
-ch33=t29
-goto begin_end_if_2
+otra = t28
 
-begin_else_2:
-local_data_int y2
-t30= 'sdff'
-local_data_String str2
-t31 = t30
-str2 = t31
-goto begin_end_else_2:
+begin_default_11:
 
-begin_end_else_2:
+end_switch_1:
+t29=3
 
-begin_end_if_2:
+begin_switch_2:
+t30 = t29
+dataint flag
+t31 = 0
+flag = t31
+t32=10
+t33 = flag
+t34 = 1
+if t34 == t33 goto begin_case_21
+if t32==t29 goto begin_case_21
+goto end_case_21
+
+begin_case_21
+t35 = 1
+flag = t35
+t36= 'un case'
+print t36
+
+end_switch_2:
 retorno = null
 
 begin_func_func2:

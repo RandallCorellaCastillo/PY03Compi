@@ -1,7 +1,6 @@
 Tabla de simbolo : globalTS : valores: variableGLob: pi:String
 variableGLob: pi2:int
 variableGLob: pi3:bool
-variableGLob: ch33:String
 variableGLob: ch24:String
 
 Tabla de simbolo : func1 : valores: tipo:func:int
@@ -9,9 +8,6 @@ parametro : x22:int
 parametro : x23:float
 variableLoc: x24:String
 variableLoc: x275:bool
-variableLoc: y:int
-variableLoc: y2:int
-variableLoc: str2:String
 
 Tabla de simbolo : func2 : valores: tipo:func:bool
 parametro : b1:bool

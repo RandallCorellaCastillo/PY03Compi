@@ -121,7 +121,7 @@ parser code {:
     public String getTipo(String id) {
         //prioridad al scope local
         ArrayList<String> scope1 = TablaSimbolos.get(currentHash);
-        if (scope1 == null){return "null";}
+        if (scope1 == null){System.out.println("HEre is the problem1"); return "null";}
         for (String elemento1 : scope1) {
             String[] elementos = elemento1.split(":");
             if (elementos[1].trim().equals(id)) {
@@ -130,13 +130,15 @@ parser code {:
         }
         //scope global
         ArrayList<String> scope2 = TablaSimbolos.get(globalHash);
-        if (scope2 != null){return "null";}
+
+        if (scope2 == null){return "null";}
         for (String elemento2 : scope2) {
             String[] elementos = elemento2.split(":");
             if (elementos[1].trim().equals(id)) {
                 return elementos[2];
             }
         }
+        
         return "null";
     }
 
@@ -354,6 +356,7 @@ EXP_ARIT    ::=
               EXP_ARIT:e    PLUS    TERM:t {: 
                                             String[] info1 = e.toString().split(":");
                                             String[] info2 = t.toString().split(":");
+
                                             if(!validarOperacionIntFloat(info1[0], info2[0])) { 
                                                 System.out.println("Parser: Err: Los operandos deben ser el mismo tipo" + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));  
                                                 RESULT = "null:null";
@@ -1343,11 +1346,11 @@ FOR_STATEMENT ::= FOR_STATEMENT_DEF:fsd UNDERS LINE UNDERS {:
 
 
 SWITCH_STATEMENT ::=  SWITCH_STATEMENT_DEF UNDERS CASE_LIST UNDERS {:
-                                                                    currentStructure = "switch";
                                                                     cod3D.append("\n\nend_switch_" + (currentSwitch - 1) +  ":");
                                                                     :};
 
 SWITCH_STATEMENT_DEF ::= SWITCH PARENTA EXP_ARIT:exp PARENTC {:
+                                                            currentStructure = "switch";
                                                             String[] info = exp.toString().split(":");
                                                             currentCase = 1;
                                                             //validarScopeVariablesGlobales

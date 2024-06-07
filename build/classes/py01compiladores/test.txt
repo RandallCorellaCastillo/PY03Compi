@@ -9,23 +9,23 @@ func:int:func1_
 	loc:char:x24; //semantico x22
         loc:bool:x275; //semantico x22
         x22++;
-        print(5+1);
+        print(5 + pi2);
         print(true);
-        while(x275)_print(4);_
-        if(4 < 5)_ print(5);_
-        //else_ print(6);_
-        print("hols");
-        for:i:in:range(10,4, 3)_
-            print(4);
+        switch(1) //semantico
         _
-            if (x22 <= 45 && x23 > 5.6)_ //semantico x22, var
-                    loc:int:y;
-                    x22=10; //error sem�ntico
-                    glob:char:ch33='a';
-            _ else _
-                    loc:int:y2; //no error duplicado en if-else
-                    loc:string:str2="sdff";
-            _
+                case:1:
+                        print("!#");
+                case:2:
+                        loc:int:otra = 10 + pi2;
+                        break;
+                default:
+                        otra = -10 * -1;
+        _
+        switch(3) //semantico
+        _
+                case:10:
+                        print("un case");
+        _
             
 	return; //cambio en retorno genera semantico
 _

@@ -998,7 +998,7 @@ currentSymbol = lex.next_token();
     public String getTipo(String id) {
         //prioridad al scope local
         ArrayList<String> scope1 = TablaSimbolos.get(currentHash);
-        if (scope1 == null){return "null";}
+        if (scope1 == null){System.out.println("HEre is the problem1"); return "null";}
         for (String elemento1 : scope1) {
             String[] elementos = elemento1.split(":");
             if (elementos[1].trim().equals(id)) {
@@ -1007,13 +1007,15 @@ currentSymbol = lex.next_token();
         }
         //scope global
         ArrayList<String> scope2 = TablaSimbolos.get(globalHash);
-        if (scope2 != null){return "null";}
+
+        if (scope2 == null){return "null";}
         for (String elemento2 : scope2) {
             String[] elementos = elemento2.split(":");
             if (elementos[1].trim().equals(id)) {
                 return elementos[2];
             }
         }
+        
         return "null";
     }
 
@@ -1473,6 +1475,7 @@ class CUP$Parser$actions {
 		 
                                             String[] info1 = e.toString().split(":");
                                             String[] info2 = t.toString().split(":");
+
                                             if(!validarOperacionIntFloat(info1[0], info2[0])) { 
                                                 System.out.println("Parser: Err: Los operandos deben ser el mismo tipo" + ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));  
                                                 RESULT = "null:null";
@@ -3560,7 +3563,6 @@ class CUP$Parser$actions {
             {
               String RESULT =null;
 		
-                                                                    currentStructure = "switch";
                                                                     cod3D.append("\n\nend_switch_" + (currentSwitch - 1) +  ":");
                                                                     
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("SWITCH_STATEMENT",34, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -3575,6 +3577,7 @@ class CUP$Parser$actions {
 		int expright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String exp = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
+                                                            currentStructure = "switch";
                                                             String[] info = exp.toString().split(":");
                                                             currentCase = 1;
                                                             //validarScopeVariablesGlobales
