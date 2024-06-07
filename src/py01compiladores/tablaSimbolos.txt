@@ -8,6 +8,7 @@ parametro : x22:int
 parametro : x23:float
 variableLoc: x24:String
 variableLoc: x275:bool
+variableLoc: otra:int
 
 Tabla de simbolo : func2 : valores: tipo:func:bool
 parametro : b1:bool

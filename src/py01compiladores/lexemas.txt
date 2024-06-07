@@ -85,7 +85,7 @@ Token: 27 int
 Token: 25 :
 Token: 11 otra
 Token: 16 =
-Token: 26 10.1
+Token: 10 10
 Token: 2 +
 Token: 11 pi2
 Token: 55 ;

@@ -998,7 +998,7 @@ currentSymbol = lex.next_token();
     public String getTipo(String id) {
         //prioridad al scope local
         ArrayList<String> scope1 = TablaSimbolos.get(currentHash);
-        if (scope1 == null){System.out.println("HEre is the problem1"); return "null";}
+        if (scope1 == null){return "null";}
         for (String elemento1 : scope1) {
             String[] elementos = elemento1.split(":");
             if (elementos[1].trim().equals(id)) {
@@ -1015,7 +1015,7 @@ currentSymbol = lex.next_token();
                 return elementos[2];
             }
         }
-        
+
         return "null";
     }
 
@@ -3181,7 +3181,7 @@ class CUP$Parser$actions {
 		String v = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 contar++; RESULT = v;
                         String[] info = v.toString().split(":");
-                        cod3D.append("\nParametro " + info[1]);
+                        cod3D.append("\nParametro " + info[0] + " " + info[1]);
                     
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PARAMETER",31, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
