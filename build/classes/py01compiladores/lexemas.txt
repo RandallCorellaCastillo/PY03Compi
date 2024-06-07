@@ -40,6 +40,12 @@ Token: 29 char
 Token: 25 :
 Token: 11 x24
 Token: 55 ;
+Token: 42 loc
+Token: 25 :
+Token: 56 bool
+Token: 25 :
+Token: 11 x275
+Token: 55 ;
 Token: 11 x22
 Token: 3 ++
 Token: 55 ;
@@ -55,6 +61,17 @@ Token: 50 (
 Token: 31 true
 Token: 51 )
 Token: 55 ;
+Token: 35 while
+Token: 50 (
+Token: 11 x275
+Token: 51 )
+Token: 54 _
+Token: 44 print
+Token: 50 (
+Token: 10 4
+Token: 51 )
+Token: 55 ;
+Token: 54 _
 Token: 33 if
 Token: 50 (
 Token: 10 4
@@ -419,4 +436,4 @@ Token: 25 :
 Token: 10 3
 Token: 55 ;
 Token: 54 _
-Cantidad de lexemas encontrados: 421
+Cantidad de lexemas encontrados: 438

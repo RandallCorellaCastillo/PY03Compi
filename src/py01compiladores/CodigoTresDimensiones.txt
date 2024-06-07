@@ -9,6 +9,7 @@ begin_func_func1:
 Param x22
 Param x23
 local_data_String x24
+local_data_bool x275
 t1 = x22
 t2 = 1
 t1 = t1 + t2
@@ -18,78 +19,90 @@ t5=t3+t4
 print t5
 t6=true
 print t6
-t7=4
-t8=5
-t9=t7<t8
-if t9 goto begin_if_1
+
+begin_while_1:
+t7=x275
+if t7 goto begin_while_block1
+goto begin_end_while_1
+
+begin_while_block_1:
+t8=4
+print t8
+goto begin_while_1
+
+begin_end_while_1:
+t9=4
+t10=5
+t11=t9<t10
+if t11 goto begin_if_1
 goto begin_end_if_1
 
 begin_if_1:
-t10=5
-print t10
+t12=5
+print t12
 goto begin_end_if_1:
 
 begin_else_1:
-t11=6
-print t11
+t13=6
+print t13
 goto begin_end_else_1:
 
 begin_end_else_1:
 
 begin_end_if_1:
-t12= 'hols'
-print t12
-t13=10
-t14=4
-t15=3
+t14= 'hols'
+print t14
+t15=10
+t16=4
+t17=3
 
 begin_for_1:
 dataint cant
 dataint cont
 dataint init
 dataint jump
-cant =t13
-cont = t14
-jump =t15
+cant =t15
+cont = t16
+jump =t17
 
 begin_for_body_1:
-t16=4
-print t16
-t18 = jump
-t17 = cont
-t17 = t17 + t18
-cont = t17
-if t17 <= cant goto begin_for_body_1
+t18=4
+print t18
+t20 = jump
+t19 = cont
+t19 = t19 + t20
+cont = t19
+if t19 <= cant goto begin_for_body_1
 
 goto end_for_1
 
 end_for_1:
-t19=x22
-t20=45
-t21=t19<=t20
-f22=x23
-f23=5.6
-t24=f22>f23
-t25=t21&&t24
-if t25 goto begin_if_2
+t21=x22
+t22=45
+t23=t21<=t22
+f24=x23
+f25=5.6
+t26=f24>f25
+t27=t23&&t26
+if t27 goto begin_if_2
 goto begin_end_if_2
 
 begin_if_2:
 local_data_int y
-t26=10
-t27 = t26
-x22 = t27
-t28='a'
+t28=10
+t29 = t28
+x22 = t29
+t30='a'
 global_data_String ch33
-ch33=t28
+ch33=t30
 goto begin_end_if_2:
 
 begin_else_2:
 local_data_int y2
-t29= 'sdff'
+t31= 'sdff'
 local_data_String str2
-t30 = t29
-str2 = t30
+t32 = t31
+str2 = t32
 goto begin_end_else_2:
 
 begin_end_else_2:

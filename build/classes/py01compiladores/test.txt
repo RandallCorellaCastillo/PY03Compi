@@ -7,9 +7,11 @@ func:int:func1_
 	param:int:x22;
 	param:float:x23; //semantico borrar par�metro
 	loc:char:x24; //semantico x22
+        loc:bool:x275; //semantico x22
         x22++;
         print(5+1);
         print(true);
+        while(x275)_print(4);_
         if(4 < 5)_ print(5);_
         else_ print(6);_
         print("hols");

@@ -294,7 +294,7 @@ terminal            PARENTA, PARENTC, PARENTCA, PARENTCC, UNDERS;
 terminal            ENDLINE, BOOOLEANF, COMA;
 
 /* Non-terminals */
-non terminal String PROGRAMA, BODY, STATEMENT, EXP, ASIG, FUNCTION_STATEMENT, EXP_ARIT, VALUE, NUMBERS, EXP_REL, BOOL, LINE, FOR_STATEMENT, WHILE_STATEMENT, IF_STATEMENT, ELSE_STATEMENT, LINER, TERM, FACTOR, OPER_REL, EXP_REL_LOG;
+non terminal String PROGRAMA, BODY, STATEMENT, EXP, ASIG, FUNCTION_STATEMENT, EXP_ARIT, VALUE, NUMBERS, EXP_REL, BOOL, LINE, FOR_STATEMENT, WHILE_STATEMENT, IF_STATEMENT, ELSE_STATEMENT, LINER, TERM, FACTOR, OPER_REL, EXP_REL_LOG, WHILE_STATEMENT_DEF_P;
 non terminal String EXP_LOG, OPER_LOG, OPERA_LOG, DECL, DECLOC, TYPES, INV_FUNC, INV_FUNC_DEF, PARAMS, PARAMETER, INV_ARRAY, VALUE_LIST, SWITCH_STATEMENT, CASE_LIST, PARAMDECL, EXP_ARIT_INTEGER, TERM_INTEGER, FACTOR_INTEGER, CASE_LIST_DEF;
 non terminal String PRINTLN, RETURN_STATEMENT, FUNC_STAT_DEF, BREAK_STATEMENT, INPUT_STATEMENT, IF_STATEMENT_DEF, IF_STATEMENT_CONTENT, ELSE_STATEMENT_CONTENT, WHILE_STATEMENT_DEF, FOR_STATEMENT_DEF, SWITCH_STATEMENT_DEF, DECLENDCASE, ASIG_ARRAY;
 
@@ -1239,19 +1239,22 @@ ELSE_STATEMENT_CONTENT ::= ELSE {:
                             cod3D.append("\n\nbegin_else_" + currentElse++ +  ":"); 
                          :};
 
-WHILE_STATEMENT ::= WHILE_STATEMENT_DEF UNDERS LINE UNDERS {:                                                       
-                                                            cod3D.append("\nif " + currentWhileCon + " goto begin_while_" + (currentWhile - 1));
+WHILE_STATEMENT ::= WHILE_STATEMENT_DEF UNDERS LINE UNDERS {:
+                                                            cod3D.append("\ngoto begin_while_" + (currentWhile - 1));
                                                             cod3D.append("\n\nbegin_end_while_" + (currentWhile - 1) +  ":");
                                                           :};
 
-WHILE_STATEMENT_DEF ::= WHILE PARENTA EXP_REL_LOG:exp PARENTC {:
+WHILE_STATEMENT_DEF ::= WHILE WHILE_STATEMENT_DEF_P EXP_REL_LOG:exp PARENTC {:
                                                 String[] info = exp.toString().split(":");
-                                                currentStructure = "while";   
+                                                currentStructure = "while";
                                                 currentWhileCon = info[1];
-                                                cod3D.append("\nif " + info[1] +  " goto begin_while_" + (currentWhile));
+                                                cod3D.append("\nif " + info[1] +  " goto begin_while_block_" + (currentWhile));
                                                 cod3D.append("\ngoto " + "begin_end_while_" + (currentWhile));
-                                                cod3D.append("\n\nbegin_while_" + currentWhile++ +  ":"); 
-                                                            :};
+                                                cod3D.append("\n\nbegin_while_block_" + currentWhile++ +  ":");
+                                                :};
+WHILE_STATEMENT_DEF_P ::= PARENTA {:
+                                    cod3D.append("\n\nbegin_while_" + currentWhile +  ":");
+                                    :};
 
 FOR_STATEMENT_DEF ::= FOR SEP IDENTIFIER SEP IN SEP RANGE PARENTA EXP_ARIT:exp1 PARENTC {:
                                                                     currentStructure = "for"; 
