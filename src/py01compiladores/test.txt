@@ -13,7 +13,7 @@ func:int:func1_
         print(true);
         while(x275)_print(4);_
         if(4 < 5)_ print(5);_
-        else_ print(6);_
+        //else_ print(6);_
         print("hols");
         for:i:in:range(10,4, 3)_
             print(4);

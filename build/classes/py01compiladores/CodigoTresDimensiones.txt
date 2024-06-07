@@ -22,7 +22,7 @@ print t6
 
 begin_while_1:
 t7=x275
-if t7 goto begin_while_block1
+if t7 goto begin_while_block_1
 goto begin_end_while_1
 
 begin_while_block_1:
@@ -35,74 +35,69 @@ t9=4
 t10=5
 t11=t9<t10
 if t11 goto begin_if_1
-goto begin_end_if_1
+goto begin_else_1
 
 begin_if_1:
 t12=5
 print t12
-goto begin_end_if_1:
+goto begin_end_if_1
 
 begin_else_1:
-t13=6
-print t13
-goto begin_end_else_1:
-
-begin_end_else_1:
 
 begin_end_if_1:
-t14= 'hols'
-print t14
-t15=10
-t16=4
-t17=3
+t13= 'hols'
+print t13
+t14=10
+t15=4
+t16=3
 
 begin_for_1:
 dataint cant
 dataint cont
 dataint init
 dataint jump
-cant =t15
-cont = t16
-jump =t17
+cant =t14
+cont = t15
+jump =t16
 
 begin_for_body_1:
-t18=4
-print t18
-t20 = jump
-t19 = cont
-t19 = t19 + t20
-cont = t19
-if t19 <= cant goto begin_for_body_1
+t17=4
+print t17
+t19 = jump
+t18 = cont
+t18 = t18 + t19
+cont = t18
+if t18 <= cant goto begin_for_body_1
 
 goto end_for_1
 
 end_for_1:
-t21=x22
-t22=45
-t23=t21<=t22
-f24=x23
-f25=5.6
-t26=f24>f25
-t27=t23&&t26
-if t27 goto begin_if_2
-goto begin_end_if_2
+t20=x22
+t21=45
+t22=t20<=t21
+f23=x23
+f24=5.6
+t25=f23>f24
+t26=t22&&t25
+if t26 goto begin_if_2
+goto begin_else_2
 
 begin_if_2:
 local_data_int y
-t28=10
-t29 = t28
-x22 = t29
-t30='a'
+t27=10
+t28 = t27
+x22 = t28
+t29='a'
 global_data_String ch33
-ch33=t30
-goto begin_end_if_2:
+ch33=t29
+goto begin_end_if_2
 
 begin_else_2:
 local_data_int y2
-t31= 'sdff'
+t30= 'sdff'
 local_data_String str2
-t32 = t31
-str2 = t32
+t31 = t30
+str2 = t31
 goto begin_end_else_2:
 
 begin_end_else_2:

@@ -85,14 +85,6 @@ Token: 10 5
 Token: 51 )
 Token: 55 ;
 Token: 54 _
-Token: 34 else
-Token: 54 _
-Token: 44 print
-Token: 50 (
-Token: 10 6
-Token: 51 )
-Token: 55 ;
-Token: 54 _
 Token: 44 print
 Token: 50 (
 Token: 12 hols
@@ -436,4 +428,4 @@ Token: 25 :
 Token: 10 3
 Token: 55 ;
 Token: 54 _
-Cantidad de lexemas encontrados: 438
+Cantidad de lexemas encontrados: 430

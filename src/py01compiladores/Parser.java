@@ -3325,7 +3325,7 @@ class CUP$Parser$actions {
                                                 if(info[0].equals("bool")) {
                                                     currentStructure = "if"; 
                                                     cod3D.append("\nif " + info[1] +  " goto begin_if_" + (currentIf));
-                                                    cod3D.append("\ngoto " + "begin_end_if_" + (currentIf));
+                                                    cod3D.append("\ngoto " + "begin_else_" + (currentElse++));
                                                     cod3D.append("\n\nbegin_if_" + currentIf++ +  ":"); 
                                                 } else {
                                                      System.out.println("Parser: Err: El valor del if debe ser booleano."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
@@ -3342,7 +3342,7 @@ class CUP$Parser$actions {
             {
               String RESULT =null;
 		
-                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1) +  ":");
+                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1));
                                             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IF_STATEMENT_CONTENT",47, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -3364,7 +3364,7 @@ class CUP$Parser$actions {
           case 128: // ELSE_STATEMENT ::= 
             {
               String RESULT =null;
-
+		 cod3D.append("\n\nbegin_else_" + (currentElse - 1) +  ":"); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("ELSE_STATEMENT",15, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -3375,7 +3375,7 @@ class CUP$Parser$actions {
               String RESULT =null;
 		
                             currentStructure = "else";
-                            cod3D.append("\n\nbegin_else_" + currentElse++ +  ":"); 
+                            cod3D.append("\n\nbegin_else_" + (currentElse-1) +  ":"); 
                          
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("ELSE_STATEMENT_CONTENT",48, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -3404,7 +3404,7 @@ class CUP$Parser$actions {
                                                 String[] info = exp.toString().split(":");
                                                 currentStructure = "while";
                                                 currentWhileCon = info[1];
-                                                cod3D.append("\nif " + info[1] +  " goto begin_while_block" + (currentWhile));
+                                                cod3D.append("\nif " + info[1] +  " goto begin_while_block_" + (currentWhile));
                                                 cod3D.append("\ngoto " + "begin_end_while_" + (currentWhile));
                                                 cod3D.append("\n\nbegin_while_block_" + currentWhile++ +  ":");
                                                 
