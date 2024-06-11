@@ -17,6 +17,7 @@ import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -3129,7 +3130,6 @@ class CUP$Parser$actions {
 		Object ID = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		  
                                         RESULT = ID.toString()  + ":" + getTipoFunc(ID.toString());
-                                        currentParam = 0;
                                         if (validarFuncionExistente(ID.toString())) {
                                             identParam(ID.toString());
                                         } else {
@@ -3150,14 +3150,26 @@ class CUP$Parser$actions {
 		String v = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
 		
                                     String[] info = v.toString().split(":");
-                                    //System.out.println(paramlist.toString());
-                                    //System.out.println(currentParam);
-                                    if (currentParam < paramlist.size()){
-                                        if( !(info[0].equals(paramlist.get(currentParam)))){
-                                        System.out.println("Parser: Err : Los parametros no son compatibles"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
-                                        } 
+                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    System.out.println("currentParam: " + currentParam);
+                                    
+                                    // Validar el parámetro actual
+                                    if (currentParam < paramlist.size()) {
+                                        System.out.println("info: " + Arrays.toString(info));
+                                        System.out.println("expected: " + paramlist.get(currentParam));
+                                        
+                                        String actualType = info[0].trim();
+                                        String expectedType = paramlist.get(currentParam).trim();
+                                        
+                                        if (!actualType.equals(expectedType)) {
+                                            System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                        }
+                                        
+                                        // Incrementar para el siguiente parámetro
                                         currentParam++;
-                                    } else{System.out.println("Parser: Err : Cantidad de parametros incompatible"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));}
+                                    } else {
+                                        System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    }
                                 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PARAMS",30, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -3170,7 +3182,29 @@ class CUP$Parser$actions {
 		int vleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int vright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		String v = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-
+		
+                                    String[] info = v.toString().split(":");
+                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    System.out.println("currentParam: " + currentParam);
+                                    
+                                    // Validar el parámetro actual
+                                    if (currentParam < paramlist.size()) {
+                                        System.out.println("info: " + Arrays.toString(info));
+                                        System.out.println("expected: " + paramlist.get(currentParam));
+                                        
+                                        String actualType = info[0].trim();
+                                        String expectedType = paramlist.get(currentParam).trim();
+                                        
+                                        if (!actualType.equals(expectedType)) {
+                                            System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                        }
+                                        
+                                        // Incrementar para el siguiente parámetro
+                                        currentParam++;
+                                    } else {
+                                        System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    }
+                                
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PARAMS",30, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

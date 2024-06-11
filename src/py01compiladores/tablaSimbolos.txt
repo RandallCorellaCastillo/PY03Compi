@@ -3,6 +3,10 @@ variableGLob: pi2:int
 variableGLob: pi3:bool
 variableGLob: ch24:String
 
+Tabla de simbolo : func5 : valores: tipo:func:bool
+parametro : b1:bool
+parametro : i1:int
+
 Tabla de simbolo : func1 : valores: tipo:func:int
 parametro : x22:int
 parametro : x23:float

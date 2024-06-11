@@ -174,6 +174,37 @@ Token: 55 ;
 Token: 54 _
 Token: 45 func
 Token: 25 :
+Token: 56 bool
+Token: 25 :
+Token: 11 func5
+Token: 54 _
+Token: 47 param
+Token: 25 :
+Token: 56 bool
+Token: 25 :
+Token: 11 b1
+Token: 55 ;
+Token: 47 param
+Token: 25 :
+Token: 27 int
+Token: 25 :
+Token: 11 i1
+Token: 55 ;
+Token: 41 glob
+Token: 25 :
+Token: 29 char
+Token: 25 :
+Token: 11 ch24
+Token: 16 =
+Token: 13 a
+Token: 55 ;
+Token: 43 return
+Token: 25 :
+Token: 32 false
+Token: 55 ;
+Token: 54 _
+Token: 45 func
+Token: 25 :
 Token: 30 string
 Token: 25 :
 Token: 11 func3
@@ -379,6 +410,17 @@ Token: 26 6.7
 Token: 22 !=
 Token: 26 8.9
 Token: 55 ;
+Token: 11 func5
+Token: 50 (
+Token: 11 t5
+Token: 57 ,
+Token: 11 in1
+Token: 9 *
+Token: 11 in1
+Token: 2 +
+Token: 10 10
+Token: 51 )
+Token: 55 ;
 Token: 42 loc
 Token: 25 :
 Token: 56 bool
@@ -408,4 +450,8 @@ Token: 25 :
 Token: 10 3
 Token: 55 ;
 Token: 54 _
+<<<<<<< Updated upstream
 Cantidad de lexemas encontrados: 410
+=======
+Cantidad de lexemas encontrados: 433
+>>>>>>> Stashed changes

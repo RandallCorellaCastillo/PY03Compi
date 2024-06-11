@@ -120,6 +120,13 @@ begin_end_if_1:
 t4=false
 retorno = t4
 
+begin_func_func5:
+Param b1
+Param i1
+t1='a'
+t2=false
+retorno = t2
+
 begin_func_func3:
 Param b1
 t1=b1
@@ -243,22 +250,31 @@ t80=f78!=f79
 local_data_bool bl0
 t81 = t80
 bl0 = t81
-t82=in1
-t83=t1
-t84=t82>=t83
-t85=false
-t86=3
-Parametro int t86
-t87=in1
+t82=t5
+Parametro bool t82
+t83=in1
+t84=in1
+t85=t83*t84
+t86=10
+t87=t85+t86
 Parametro int t87
-t88= call begin_func_func1, 2
-t89=56
-t90=t88>t89
-t90= !t90
-t91=t85&&t90
-t92=t84||t91
+t88= call begin_func_func5, 2
+t89=in1
+t90=t1
+t91=t89>=t90
+t92=false
+t93=3
+Parametro int t93
+t94=in1
+Parametro int t94
+t95= call begin_func_func1, 2
+t96=56
+t97=t95>t96
+t97= !t97
+t98=t92&&t97
+t99=t91||t98
 local_data_bool bl1
-t93 = t92
-bl1 = t93
-t94=3
-retorno = t94
+t100 = t99
+bl1 = t100
+t101=3
+retorno = t101

@@ -11,7 +11,7 @@ import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.Arrays;
 
 parser code {:
     // Connect this parser to a scanner!
@@ -1124,7 +1124,6 @@ INV_FUNC ::= INV_FUNC_DEF:in PARAMS:cparam PARENTC{: RESULT = in;
 INV_FUNC_DEF ::= IDENTIFIER:ID PARENTA
                                     {:  
                                         RESULT = ID.toString()  + ":" + getTipoFunc(ID.toString());
-                                        currentParam = 0;
                                         if (validarFuncionExistente(ID.toString())) {
                                             identParam(ID.toString());
                                         } else {
@@ -1136,16 +1135,52 @@ INV_FUNC_DEF ::= IDENTIFIER:ID PARENTA
 PARAMS ::= PARAMETER:v COMA PARAMS
                                 {:
                                     String[] info = v.toString().split(":");
-                                    //System.out.println(paramlist.toString());
-                                    //System.out.println(currentParam);
-                                    if (currentParam < paramlist.size()){
-                                        if( !(info[0].equals(paramlist.get(currentParam)))){
-                                        System.out.println("Parser: Err : Los parametros no son compatibles"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
-                                        } 
+                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    System.out.println("currentParam: " + currentParam);
+                                    
+                                    // Validar el parámetro actual
+                                    if (currentParam < paramlist.size()) {
+                                        System.out.println("info: " + Arrays.toString(info));
+                                        System.out.println("expected: " + paramlist.get(currentParam));
+                                        
+                                        String actualType = info[0].trim();
+                                        String expectedType = paramlist.get(currentParam).trim();
+                                        
+                                        if (!actualType.equals(expectedType)) {
+                                            System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                        }
+                                        
+                                        // Incrementar para el siguiente parámetro
                                         currentParam++;
-                                    } else{System.out.println("Parser: Err : Cantidad de parametros incompatible"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));}
+                                    } else {
+                                        System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    }
                                 :};
-PARAMS ::= PARAMETER:v;
+
+PARAMS ::= PARAMETER:v
+                                {:
+                                    String[] info = v.toString().split(":");
+                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    System.out.println("currentParam: " + currentParam);
+                                    
+                                    // Validar el parámetro actual
+                                    if (currentParam < paramlist.size()) {
+                                        System.out.println("info: " + Arrays.toString(info));
+                                        System.out.println("expected: " + paramlist.get(currentParam));
+                                        
+                                        String actualType = info[0].trim();
+                                        String expectedType = paramlist.get(currentParam).trim();
+                                        
+                                        if (!actualType.equals(expectedType)) {
+                                            System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                        }
+                                        
+                                        // Incrementar para el siguiente parámetro
+                                        currentParam++;
+                                    } else {
+                                        System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    }
+                                :};
 
 PARAMETER ::= VALUE:v{: contar++; RESULT = v;
                         String[] info = v.toString().split(":");

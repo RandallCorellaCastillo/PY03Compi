@@ -38,6 +38,13 @@ func:bool:func2_
         if(true)_print(1);_
 	return:false; //generar error con -6.5 y con i1
 _
+
+func:bool:func5_
+	param:bool:b1;
+	param:int:i1;
+	glob:char:ch24='a'; //semantico
+	return:false; //generar error con -6.5 y con i1
+_
  
 func:string:func3_ //semantico string
 	param:string:b1;
@@ -71,6 +78,7 @@ Comentario 1
 	fl1 = 4.5%fl2^-0.005; //semantico miChar
 	func2 (t5, in1 * in1 + 10); //semantico miFunc, hola
 	loc:bool:bl0 = 6.7 != 8.9; //ok
+        func5 (t5, in1 * in1 + 10);
  
 	loc:bool:bl1 = in1 >= t1 || false && !(func1(3,in1) > 56); //semantico in1 >= fl1, func2
 	return:3; //semantico
