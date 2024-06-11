@@ -1781,7 +1781,9 @@ class CUP$Parser$actions {
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		 String tipo = getTipo(i.toString()); if(validarUsoVariable(i.toString())) {
                                                                                 String baseTemp = "t";
-                                                                                if (tipo.equals("float")) baseTemp = "f";
+                                                                                if (tipo.equals("float")) {
+                                                                                    baseTemp = "f";
+                                                                                }
                                                                                 if(tipo.equals("float") || tipo.equals("int")) {
                                                                                     postOrden = true;
                                                                                     currentTipePostOrden = 1;
@@ -2764,6 +2766,7 @@ class CUP$Parser$actions {
                                                                             TablaSimbolos.get(currentHash).add("variableLoc: " + ID.toString() + ":" + tloc.toString());
                                                                         
                                                                             String baseTemp = "t";
+                                                                            if(info[0].equals("float")) baseTemp = "f";
                                                                             String miTempId = baseTemp + currentTemp++;
                                                                             cod3D.append("\nlocal_data_" + tloc.toString() + " " + ID.toString());
                                                                             cod3D.append("\n" + miTempId + " = " + info[1]);

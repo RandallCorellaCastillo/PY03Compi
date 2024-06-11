@@ -48,6 +48,14 @@ Token: 56 bool
 Token: 25 :
 Token: 11 x275
 Token: 55 ;
+Token: 42 loc
+Token: 25 :
+Token: 28 float
+Token: 25 :
+Token: 11 x2
+Token: 16 =
+Token: 26 4.0
+Token: 55 ;
 Token: 11 x22
 Token: 3 ++
 Token: 55 ;
@@ -148,6 +156,17 @@ Token: 11 ch24
 Token: 16 =
 Token: 13 a
 Token: 55 ;
+Token: 33 if
+Token: 50 (
+Token: 31 true
+Token: 51 )
+Token: 54 _
+Token: 44 print
+Token: 50 (
+Token: 10 1
+Token: 51 )
+Token: 55 ;
+Token: 54 _
 Token: 43 return
 Token: 25 :
 Token: 32 false
@@ -389,4 +408,4 @@ Token: 25 :
 Token: 10 3
 Token: 55 ;
 Token: 54 _
-Cantidad de lexemas encontrados: 391
+Cantidad de lexemas encontrados: 410

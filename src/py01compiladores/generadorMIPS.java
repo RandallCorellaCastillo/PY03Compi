@@ -73,15 +73,29 @@ public class generadorMIPS {
             String[] partesEquals = linea.split("=");
             if(!partes[0].equals("")) { //En caso de no ser una linea vacia.
                 //System.out.println("Linea numero: " + cont++ + " text: " + partes[0]);
-
-                if(partes_[0].equals("begin")){ result+= "\n" + partes[0] + ":";} //En caso de ser una declaracion de funcion.
+                String etiqueta = partesEquals[0];
+                if(partes_[0].equals("begin") || partes_[0].equals("end")){ result+= "\n\n" + partes[0] + ":";} //En caso de ser una declaracion de funcion.
                 
                 if (linea.contains("=")) {
+                    if(etiqueta.matches("^\\s*[t][0-9]+\\s*$")) { //en caso de ser una t.
+
+                        String value = partesEquals[1].trim();
+                        if(value.matches("^'[^']*'$")) {
+                            System.out.println("String Asignacion: " + linea);
+                        } else {
+                            System.out.println(linea);    
+                        }
+                        
+                    } else if(etiqueta.matches("^\\s*[f][0-9]+\\s*$")) { //en caso de ser una f.
+
+                        System.out.println(linea);
+
+                    } else { //cualquier otra cosa.
+                        System.out.println("Asignaciones: " +  linea);
+                    }
                     //EN caso de las asignaciones en MIPS.
                 }
-                
             }
-            
         }
     }
     

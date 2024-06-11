@@ -12,85 +12,89 @@ Param x22
 Param x23
 local_data_String x24
 local_data_bool x275
-t2 = x22
-t3 = 1
-t2 = t2 + t3
-t4=5
-t5=pi2
-t6=t4+t5
-print t6
-t7=true
-print t7
-t8=1
+f2=4.0
+local_data_float x2
+f3 = f2
+x2 = f3
+t4 = x22
+t5 = 1
+t4 = t4 + t5
+t6=5
+t7=pi2
+t8=t6+t7
+print t8
+t9=true
+print t9
+t10=1
 
 begin_switch_1:
-t9 = t8
+t11 = t10
 dataint flag
-t10 = 0
-flag = t10
-t11=1
-t12 = flag
-t13 = 1
-if t13 == t12 goto begin_case_11
-if t11==t8 goto begin_case_11
+t12 = 0
+flag = t12
+t13=1
+t14 = flag
+t15 = 1
+if t15 == t14 goto begin_case_11
+if t13==t10 goto begin_case_11
 goto end_case_11
 
 begin_case_11
-t14 = 1
-flag = t14
-t15= '!#'
-print t15
+t16 = 1
+flag = t16
+t17= '!#'
+print t17
 end_case_11:
-t16=2
-t17 = flag
-t18 = 1
-if t18 == t17 goto begin_case_12
-if t16==t8 goto begin_case_12
+t18=2
+t19 = flag
+t20 = 1
+if t20 == t19 goto begin_case_12
+if t18==t10 goto begin_case_12
 goto end_case_12
 
 begin_case_12
-t19 = 1
-flag = t19
-t20=10
-t21=pi2
-t22=t20+t21
+t21 = 1
+flag = t21
+t22=10
+t23=pi2
+t24=t22+t23
 local_data_int otra
-t23 = t22
-otra = t23
+t25 = t24
+otra = t25
 goto end_switch_1
 end_case_12:
-t24= -1
-t25=10
-t26=t24 * t25
-t27= -1
-t28=1
-t29=t27 * t28
-t30=t26*t29
-t31 = t30
-otra = t31
+t26= -1
+t27=10
+t28=t26 * t27
+t29= -1
+t30=1
+t31=t29 * t30
+t32=t28*t31
+t33 = t32
+otra = t33
 
 begin_default_11:
 
 end_switch_1:
-t32=3
+t34=3
 
 begin_switch_2:
-t33 = t32
+t35 = t34
 dataint flag
-t34 = 0
-flag = t34
-t35=10
-t36 = flag
-t37 = 1
-if t37 == t36 goto begin_case_21
-if t35==t32 goto begin_case_21
+t36 = 0
+flag = t36
+t37=10
+t38 = flag
+t39 = 1
+if t39 == t38 goto begin_case_21
+if t37==t34 goto begin_case_21
 goto end_case_21
 
 begin_case_21
-t38 = 1
-flag = t38
-t39= 'un case'
-print t39
+t40 = 1
+flag = t40
+t41= 'un case'
+print t41
 
 end_switch_2:
 retorno = null
@@ -101,8 +105,20 @@ Param i1
 t1='a'
 global_data_String ch24
 ch24=t1
-t2=false
-retorno = t2
+t2=true
+if t2 goto begin_if_1
+goto begin_else_1
+
+begin_if_1:
+t3=1
+print t3
+goto begin_end_if_1
+
+begin_else_1:
+
+begin_end_if_1:
+t4=false
+retorno = t4
 
 begin_func_func3:
 Param b1
@@ -118,8 +134,8 @@ f3= -1
 f4=2.0
 f5=f3 * f4
 local_data_float t2
-t6 = f5
-t2 = t6
+f6 = f5
+t2 = f6
 t7='d'
 local_data_String t3
 t8 = t7
@@ -146,8 +162,8 @@ t18 = t17
 str1 = t18
 f19=56.6
 local_data_float fl1
-t20 = f19
-fl1 = t20
+f20 = f19
+fl1 = f20
 t21 = t1
 t22= -1
 t23=14
@@ -174,8 +190,8 @@ f39=76.3
 f40=f38%f39
 f41=f37+f40
 local_data_float fl2
-t42 = f41
-fl2 = t42
+f42 = f41
+fl2 = f42
 t43=3
 local_data_arrayint arr
 t44=1

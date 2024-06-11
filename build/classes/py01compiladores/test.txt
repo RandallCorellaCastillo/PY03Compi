@@ -8,6 +8,7 @@ func:int:func1_
 	param:float:x23; //semantico borrar par�metro
 	loc:char:x24; //semantico x22
         loc:bool:x275; //semantico x22
+        loc:float:x2 = 4.0; //semantico x22
         x22++;
         print(5 + pi2);
         print(true);
@@ -34,6 +35,7 @@ func:bool:func2_
 	param:bool:b1;
 	param:int:i1;
 	glob:char:ch24='a'; //semantico
+        if(true)_print(1);_
 	return:false; //generar error con -6.5 y con i1
 _
  

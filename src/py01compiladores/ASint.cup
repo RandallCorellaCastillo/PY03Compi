@@ -503,7 +503,9 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
 
             | IDENTIFIER:i MINUSM {: String tipo = getTipo(i.toString()); if(validarUsoVariable(i.toString())) {
                                                                                 String baseTemp = "t";
-                                                                                if (tipo.equals("float")) baseTemp = "f";
+                                                                                if (tipo.equals("float")) {
+                                                                                    baseTemp = "f";
+                                                                                }
                                                                                 if(tipo.equals("float") || tipo.equals("int")) {
                                                                                     postOrden = true;
                                                                                     currentTipePostOrden = 1;
@@ -924,6 +926,7 @@ DECLOC::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID EQ VALUE:v ENDLINE {:
                                                                             TablaSimbolos.get(currentHash).add("variableLoc: " + ID.toString() + ":" + tloc.toString());
                                                                         
                                                                             String baseTemp = "t";
+                                                                            if(info[0].equals("float")) baseTemp = "f";
                                                                             String miTempId = baseTemp + currentTemp++;
                                                                             cod3D.append("\nlocal_data_" + tloc.toString() + " " + ID.toString());
                                                                             cod3D.append("\n" + miTempId + " = " + info[1]);
