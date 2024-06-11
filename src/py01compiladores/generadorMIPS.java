@@ -112,20 +112,20 @@ public class generadorMIPS {
 
                                 if(listOper[1].equals("+")) {
                                     almacenarOperacion += "\nadd $t2, $t0, $t1";
-                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                    almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
                                 if(listOper[1].equals("-")) {
                                     almacenarOperacion += "\nsub $t2, $t0, $t1";
-                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                    almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
                                 if(listOper[1].equals("*")) {
                                     almacenarOperacion += "\nmul $t2, $t0, $t1";
-                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                    almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
                                 if(listOper[1].equals("/")) {
                                     almacenarOperacion += "\ndiv $t0, $t1";
                                     almacenarOperacion += "\nmflo $t2";
-                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                    almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
                                 result += almacenarOperacion;
                             }
