@@ -60,6 +60,7 @@ parser code {:
         this.symbolFactory = new DefaultSymbolFactory();
     }
     
+    
     public void syntax_error(Symbol s) {
         System.out.println("Error R de sintaxis: " +  s.value + " linea: " +  (s.left+1) +  " columna: " +  (s.right+1));
     }
@@ -105,6 +106,15 @@ parser code {:
 
         }
         return true;
+    }
+
+    public static void invertirLista(ArrayList<String> lista) {
+        int size = lista.size();
+        for (int i = 0; i < size / 2; i++) {
+            String temp = lista.get(i);
+            lista.set(i, lista.get(size - 1 - i));
+            lista.set(size - 1 - i, temp);
+        }
     }
 
     public boolean validarScopeVariablesGlobales (String id) throws Exception {
@@ -1133,10 +1143,11 @@ INV_FUNC_DEF ::= IDENTIFIER:ID PARENTA
 PARAMS ::= PARAMETER:v COMA PARAMS
                                 {:
                                     String[] info = v.toString().split(":");
-                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
-                                    System.out.println("currentParam: " + currentParam);
+                                    //System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    //System.out.println("currentParam: " + currentParam);
                                     
                                     // Validar el parámetro actual
+                                    invertirLista(paramlist);
                                     if (currentParam < paramlist.size()) {
                                         System.out.println("info: " + Arrays.toString(info));
                                         System.out.println("expected: " + paramlist.get(currentParam));
@@ -1148,20 +1159,20 @@ PARAMS ::= PARAMETER:v COMA PARAMS
                                             System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                         }
                                         
-                                        // Incrementar para el siguiente parámetro
                                         currentParam++;
                                     } else {
                                         System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                     }
+                                    invertirLista(paramlist);
+
                                 :};
 
 PARAMS ::= PARAMETER:v
                                 {:
                                     String[] info = v.toString().split(":");
-                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
-                                    System.out.println("currentParam: " + currentParam);
-                                    
-                                    // Validar el parámetro actual
+                                    //System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    //System.out.println("currentParam: " + currentParam);
+                                    invertirLista(paramlist);
                                     if (currentParam < paramlist.size()) {
                                         System.out.println("info: " + Arrays.toString(info));
                                         System.out.println("expected: " + paramlist.get(currentParam));
@@ -1172,12 +1183,12 @@ PARAMS ::= PARAMETER:v
                                         if (!actualType.equals(expectedType)) {
                                             System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                         }
-                                        
-                                        // Incrementar para el siguiente parámetro
+
                                         currentParam++;
                                     } else {
                                         System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                     }
+                                    invertirLista(paramlist);
                                 :};
 
 PARAMETER ::= VALUE:v{: contar++; RESULT = v;
