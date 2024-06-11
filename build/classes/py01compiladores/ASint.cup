@@ -272,8 +272,6 @@ parser code {:
 
 :}
 
-
-
 /* define how to connect to the scanner! */
 //init with {: s.init(); :};
 //scan with {: return s.next_token(); :};

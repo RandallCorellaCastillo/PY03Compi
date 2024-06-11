@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.sound.sampled.LineUnavailableException;
 /**
  *
  * @author truez
@@ -77,18 +79,61 @@ public class generadorMIPS {
                 if(partes_[0].equals("begin") || partes_[0].equals("end")){ result+= "\n\n" + partes[0] + ":";} //En caso de ser una declaracion de funcion.
                 
                 if (linea.contains("=")) {
+                    result += "\naddi $sp, $sp, -4";
                     if(etiqueta.matches("^\\s*[t][0-9]+\\s*$")) { //en caso de ser una t.
 
                         String value = partesEquals[1].trim();
-                        if(value.matches("^'[^']*'$")) {
+                        if(value.matches("^'[^']*'$")) { //En caso de ser una declaracion de string.
                             System.out.println("String Asignacion: " + linea);
                         } else {
-                            System.out.println(linea);    
+                            //Logica principal.
+                            String almacenarEntero = "";
+                            String input = partesEquals[1].trim(); 
+                            String patternNumber = "\\s*-?\\d+(\\.\\d+)?\\s*"; //Regex un numero entero.
+                            boolean isNumber = input.matches(patternNumber);
+                            if (isNumber) {
+                                almacenarEntero += "\nli $v0, " + input;
+                                almacenarEntero += "\nsw $v0, 0($sp)";
+                                result += almacenarEntero;
+                            }
+                            String patternOper = "\\b\\w+\\d+\\s*([-+*/])\\s*\\w+\\d+\\b"; // Regex para el operando.
+                            boolean isOper = input.matches(patternOper);
+                            String almacenarOperacion = "";
+                            if(isOper) {
+                                System.out.println("oper: " + linea);
+                                String[] listOper = input.split("(?<=[\\+\\-\\*/])|(?=[\\+\\-\\*/])");
+                                int pos1 = Integer.parseInt(listOper[0].replaceAll("\\D", ""));
+                                int pos2 = Integer.parseInt(listOper[2].replaceAll("\\D", ""));
+                                pos1 = pos1 * 4;
+                                pos2 = pos2 * 4;
+                                //
+                                almacenarOperacion += "\nlw $t0, " + pos1 + "($sp) ";
+                                almacenarOperacion += "\nlw $t1, " + pos2 + "($sp) ";
+
+                                if(listOper[1].equals("+")) {
+                                    almacenarOperacion += "\nadd $t2, $t0, $t1";
+                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                }
+                                if(listOper[1].equals("-")) {
+                                    almacenarOperacion += "\nsub $t2, $t0, $t1";
+                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                }
+                                if(listOper[1].equals("*")) {
+                                    almacenarOperacion += "\nmul $t2, $t0, $t1";
+                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                }
+                                if(listOper[1].equals("/")) {
+                                    almacenarOperacion += "\ndiv $t0, $t1";
+                                    almacenarOperacion += "\nmflo $t2";
+                                    almacenarOperacion += "\nsw $t2, ($sp)";
+                                }
+                                result += almacenarOperacion;
+                            }
                         }
                         
                     } else if(etiqueta.matches("^\\s*[f][0-9]+\\s*$")) { //en caso de ser una f.
 
-                        System.out.println(linea);
+                        System.out.println("flotantes: " + linea);
 
                     } else { //cualquier otra cosa.
                         System.out.println("Asignaciones: " +  linea);

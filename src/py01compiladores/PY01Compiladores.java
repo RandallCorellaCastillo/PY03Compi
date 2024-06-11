@@ -169,7 +169,7 @@ public class PY01Compiladores {
         generador.dataGeneratorVariables();
         generador.textGenerator();
         generador.macrosGenerator();
-        //generador.textTostring();
+        generador.textTostring();
         
         /*
         for (String linea : lineasDelArchivo) {
