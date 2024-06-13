@@ -66,30 +66,31 @@ public class generadorMIPS {
         result += "\nflag : .word 0" + "\ncont : .word 0" + "\ncant : .word 0" + "\njump : .word 0" + "\ninit : .word 0";
     }
     
-    public void textGenerator(){
-         result += "\n.text" + "\n.globl main" + "\nmain:";
-         int cont = 1;
-         for (String linea : lineas) {
+    public void textGenerator() {
+        result += "\n.text" + "\n.globl main" + "\nmain:";
+        int cont = 1;
+        for (String linea : lineas) {
             String[] partes = linea.split(" ");
             String[] partes_ = linea.split("_");
             String[] partesEquals = linea.split("=");
-            if(!partes[0].equals("")) { //En caso de no ser una linea vacia.
-                //System.out.println("Linea numero: " + cont++ + " text: " + partes[0]);
+            if (!partes[0].equals("")) { // En caso de no ser una línea vacía.
+                // System.out.println("Linea numero: " + cont++ + " text: " + partes[0]);
                 String etiqueta = partesEquals[0];
-                if(partes_[0].equals("begin") || partes_[0].equals("end")){ result+= "\n\n" + partes[0] + ":";} //En caso de ser una declaracion de funcion.
-                
+                if (partes_[0].equals("begin") || partes_[0].equals("end")) {
+                    result += "\n\n" + partes[0] + ":";
+                } // En caso de ser una declaración de función.
                 if (linea.contains("=")) {
                     result += "\naddi $sp, $sp, -4";
-                    if(etiqueta.matches("^\\s*[t][0-9]+\\s*$")) { //en caso de ser una t.
-
+                    if (etiqueta.matches("^\\s*[t][0-9]+\\s*$")) { // en caso de ser una t.
+    
                         String value = partesEquals[1].trim();
-                        if(value.matches("^'[^']*'$")) { //En caso de ser una declaracion de string.
+                        if (value.matches("^'[^']*'$")) { // En caso de ser una declaración de string.
                             System.out.println("String Asignacion: " + linea);
                         } else {
-                            //Logica principal.
+                            // Lógica principal.
                             String almacenarEntero = "";
-                            String input = partesEquals[1].trim(); 
-                            String patternNumber = "\\s*-?\\d+(\\.\\d+)?\\s*"; //Regex un numero entero.
+                            String input = partesEquals[1].trim();
+                            String patternNumber = "\\s*-?\\d+(\\.\\d+)?\\s*"; // Regex un número entero.
                             boolean isNumber = input.matches(patternNumber);
                             if (isNumber) {
                                 almacenarEntero += "\nli $v0, " + input;
@@ -99,7 +100,7 @@ public class generadorMIPS {
                             String patternOper = "\\b\\w+\\d+\\s*([-+*/])\\s*\\w+\\d+\\b"; // Regex para el operando.
                             boolean isOper = input.matches(patternOper);
                             String almacenarOperacion = "";
-                            if(isOper) {
+                            if (isOper) {
                                 System.out.println("oper: " + linea);
                                 String[] listOper = input.split("(?<=[\\+\\-\\*/])|(?=[\\+\\-\\*/])");
                                 int pos1 = Integer.parseInt(listOper[0].replaceAll("\\D", ""));
@@ -109,20 +110,20 @@ public class generadorMIPS {
                                 //
                                 almacenarOperacion += "\nlw $t0, " + pos1 + "($sp) ";
                                 almacenarOperacion += "\nlw $t1, " + pos2 + "($sp) ";
-
-                                if(listOper[1].equals("+")) {
+    
+                                if (listOper[1].equals("+")) {
                                     almacenarOperacion += "\nadd $t2, $t0, $t1";
                                     almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
-                                if(listOper[1].equals("-")) {
+                                if (listOper[1].equals("-")) {
                                     almacenarOperacion += "\nsub $t2, $t0, $t1";
                                     almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
-                                if(listOper[1].equals("*")) {
+                                if (listOper[1].equals("*")) {
                                     almacenarOperacion += "\nmul $t2, $t0, $t1";
                                     almacenarOperacion += "\nsw $t2, 0($sp)";
                                 }
-                                if(listOper[1].equals("/")) {
+                                if (listOper[1].equals("/")) {
                                     almacenarOperacion += "\ndiv $t0, $t1";
                                     almacenarOperacion += "\nmflo $t2";
                                     almacenarOperacion += "\nsw $t2, 0($sp)";
@@ -130,19 +131,80 @@ public class generadorMIPS {
                                 result += almacenarOperacion;
                             }
                         }
-                        
-                    } else if(etiqueta.matches("^\\s*[f][0-9]+\\s*$")) { //en caso de ser una f.
-
+    
+                    } else if (etiqueta.matches("^\\s*[f][0-9]+\\s*$")) { // en caso de ser una f.
+    
                         System.out.println("flotantes: " + linea);
-
-                    } else { //cualquier otra cosa.
-                        System.out.println("Asignaciones: " +  linea);
+    
+                    } else { // cualquier otra cosa.
+                        System.out.println("Asignaciones: " + linea);
                     }
-                    //EN caso de las asignaciones en MIPS.
+                    // EN caso de las asignaciones en MIPS.
+                } else if (partes[0].equals("goto")) { // Manejar saltos (goto)
+                    if (partes.length > 1) {
+                        String label = partes[1];
+                        result += "\nj " + label;
+                    } else {
+                        System.err.println("Error: Sintaxis de goto incorrecta en línea: " + linea);
+                    }
+                } else if (partes[0].equals("if")) { // Manejar condicionales (if)
+                    if (partes.length == 4 && partes[2].equals("goto")) { // Caso `if t2 goto label`
+                        String var = partes[1];
+                        String label = partes[3];
+                        int pos = Integer.parseInt(var.replaceAll("\\D", "")) * 4;
+                        result += "\nlw $t0, " + pos + "($sp)";
+                        result += "\nbnez $t0, " + label; // Saltar si no es cero
+                    } else if (partes.length > 2 && partes[2].startsWith("goto")) { // Caso `if (t1 == t2) goto label`
+                        String condition = partes[1].substring(1, partes[1].length() - 1);
+                        String[] condParts = condition.split(" ");
+                        if (condParts.length == 3) {
+                            String var1 = condParts[0];
+                            String operator = condParts[1];
+                            String var2 = condParts[2];
+                            String label = partes[3]; // La etiqueta a saltar
+    
+                            int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
+                            int pos2 = Integer.parseInt(var2.replaceAll("\\D", ""));
+    
+                            pos1 = pos1 * 4;
+                            pos2 = pos2 * 4;
+    
+                            result += "\nlw $t0, " + pos1 + "($sp)";
+                            result += "\nlw $t1, " + pos2 + "($sp)";
+    
+                            switch (operator) {
+                                case "==":
+                                    System.out.println("entro");
+                                    result += "\nbeq $t0, $t1, " + label;
+                                    break;
+                                case "!=":
+                                    result += "\nbne $t0, $t1, " + label;
+                                    break;
+                                case "<":
+                                    result += "\nblt $t0, $t1, " + label;
+                                    break;
+                                case "<=":
+                                    result += "\nble $t0, $t1, " + label;
+                                    break;
+                                case ">":
+                                    result += "\nbgt $t0, $t1, " + label;
+                                    break;
+                                case ">=":
+                                    result += "\nbge $t0, $t1, " + label;
+                                    break;
+                                default:
+                                    System.err.println("Error: Operador desconocido en línea: " + linea);
+                                    break;
+                            }
+                        } else {
+                            System.err.println("Error: Sintaxis de comparación incorrecta en línea: " + linea);
+                        }
+                    }
                 }
             }
         }
     }
+    
     
         public void macrosGenerator(){
             result += "\n\n---------------------Macros---------------------\n";
