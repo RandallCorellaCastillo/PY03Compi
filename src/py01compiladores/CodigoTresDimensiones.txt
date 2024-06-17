@@ -39,7 +39,7 @@ if t15==t14 goto begin_case_11
 if t13==t10 goto begin_case_11
 goto end_case_11
 
-begin_case_11
+begin_case_11:
 t16=1
 flag=t16
 t17='!#'
@@ -52,7 +52,7 @@ if t20==t19 goto begin_case_12
 if t18==t10 goto begin_case_12
 goto end_case_12
 
-begin_case_12
+begin_case_12:
 t21=1
 flag=t21
 t22=10
@@ -61,7 +61,7 @@ t24=t22+t23
 local_data_int otra
 t25=t24
 otra=t25
-goto end_switch_1
+goto end_switch_1:
 end_case_12:
 t26= -1
 t27=10
@@ -90,7 +90,7 @@ if t39==t38 goto begin_case_21
 if t37==t34 goto begin_case_21
 goto end_case_21
 
-begin_case_21
+begin_case_21:
 t40=1
 flag=t40
 t41='un case'

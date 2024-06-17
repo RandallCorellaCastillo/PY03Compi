@@ -3738,7 +3738,7 @@ class CUP$Parser$actions {
                                             cod3D.append("\nif " + info[1] + "==" + currentSwitchValue + " goto begin_case_" + (currentSwitch - 1) + currentCase++);
                                             cod3D.append("\ngoto end_case_" + (currentSwitch - 1) + (currentCase - 1));
 
-                                            cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1));
+                                            cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1) + ":");
                                             cod3D.append("\nt" + currentTemp + "=" +  "1");
                                             cod3D.append("\nflag" + "=t" + currentTemp++);
                                             RESULT = (currentSwitch - 1) +  ":" + (currentCase - 1);
@@ -3786,22 +3786,22 @@ class CUP$Parser$actions {
               String RESULT =null;
 		 
                                         if (currentStructure == "switch"){
-                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1));
+                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1) + ":" );
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "for"){
-                                            cod3D.append("\ngoto end_for_" + (currentFor - 1));
+                                            cod3D.append("\ngoto end_for_" + (currentFor - 1) + ":" );
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "while"){
-                                            cod3D.append("\ngoto begin_end_while_" + (currentWhile - 1));
+                                            cod3D.append("\ngoto begin_end_while_" + (currentWhile - 1) + ":");
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "if"){
-                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1));
+                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1) + ":");
                                         }
                                         if (currentStructure == "else"){
-                                            cod3D.append("\ngoto begin_end_else_" + (currentElse - 1));
+                                            cod3D.append("\ngoto begin_end_else_" + (currentElse - 1) + ":");
                                         }
                                   
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("BREAK_STATEMENT",44, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

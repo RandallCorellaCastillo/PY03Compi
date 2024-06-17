@@ -1446,7 +1446,7 @@ CASE_LIST_DEF ::= CASE SEP EXP_ARIT:exp SEP {:
                                             cod3D.append("\nif " + info[1] + "==" + currentSwitchValue + " goto begin_case_" + (currentSwitch - 1) + currentCase++);
                                             cod3D.append("\ngoto end_case_" + (currentSwitch - 1) + (currentCase - 1));
 
-                                            cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1));
+                                            cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1) + ":");
                                             cod3D.append("\nt" + currentTemp + "=" +  "1");
                                             cod3D.append("\nflag" + "=t" + currentTemp++);
                                             RESULT = (currentSwitch - 1) +  ":" + (currentCase - 1);
@@ -1472,22 +1472,22 @@ RETURN_STATEMENT ::=  RETURN SEP VALUE:v ENDLINE {:
 
 BREAK_STATEMENT ::=  BREAK ENDLINE {: 
                                         if (currentStructure == "switch"){
-                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1));
+                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1) + ":" );
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "for"){
-                                            cod3D.append("\ngoto end_for_" + (currentFor - 1));
+                                            cod3D.append("\ngoto end_for_" + (currentFor - 1) + ":" );
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "while"){
-                                            cod3D.append("\ngoto begin_end_while_" + (currentWhile - 1));
+                                            cod3D.append("\ngoto begin_end_while_" + (currentWhile - 1) + ":");
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "if"){
-                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1));
+                                            cod3D.append("\ngoto begin_end_if_" + (currentIf - 1) + ":");
                                         }
                                         if (currentStructure == "else"){
-                                            cod3D.append("\ngoto begin_end_else_" + (currentElse - 1));
+                                            cod3D.append("\ngoto begin_end_else_" + (currentElse - 1) + ":");
                                         }
                                   :};
 

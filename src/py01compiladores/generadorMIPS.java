@@ -98,7 +98,7 @@ public class generadorMIPS {
     public String etiquetaText(String[] partes_,String[] partes){
         String texto = "";  
         if (partes_[0].equals("begin") || partes_[0].equals("end")) {
-            texto += "\n\n" + partes[0] + ":";
+            texto += "\n\n" + partes[0];
         }
         return texto;
     }
