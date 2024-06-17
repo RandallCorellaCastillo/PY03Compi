@@ -95,6 +95,7 @@ t40=1
 flag=t40
 t41='un case'
 print t41
+end_case_21:
 
 end_switch_2:
 retorno = null

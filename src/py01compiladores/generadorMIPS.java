@@ -29,7 +29,7 @@ public class generadorMIPS {
         this.ruta = ruta;
         this.lineas = new ArrayList<>();
         this.result = ".data";
-        this.Tcant = 0;
+        this.Tcant = 1;
         this.Scant = 1;
         leerYDividirArchivo();
     }
@@ -149,12 +149,14 @@ public class generadorMIPS {
                         texto += almacenarEntero;
                     }
                     if(partesEquals[1].trim().matches("^\\s*[t][0-9]+\\s*$")) {
+                        Tcant++;
                         texto += "\naddi $sp, $sp, -4";
                         int pos = Integer.parseInt(partesEquals[1].replaceAll("\\D", ""));
-                        pos = (Tcant * 4) - pos * 4;
-                        Tcant++;
+                        pos = (Tcant * 4) - (pos - 1) * 4;
+                        if(pos < 0) {pos = pos * -1;}
+                        
                         String almacenarValor = "";
-                        almacenarValor += "\nlw $t0, " + (pos * - 1) + "($sp) ";
+                        almacenarValor += "\nlw $t0, " + (pos) + "($sp) ";
                         almacenarValor += "\nsw $t0, 0($sp)";
                     }
                     String patternOper = "\\b\\w+\\d+\\s*([-+*/])\\s*\\w+\\d+\\b"; // Regex para el operando.
@@ -162,15 +164,18 @@ public class generadorMIPS {
                     String almacenarOperacion = "";
                     if (isOper) {
                         texto += "\naddi $sp, $sp, -4";
+                        Tcant++;
                         String[] listOper = input.split("(?<=[\\+\\-\\*/])|(?=[\\+\\-\\*/])");
                         int pos1 = Integer.parseInt(listOper[0].replaceAll("\\D", ""));
                         int pos2 = Integer.parseInt(listOper[2].replaceAll("\\D", ""));
-                        pos1 = (Tcant * 4) - pos1 * 4;
-                        pos2 = (Tcant * 4) - pos2 * 4;
-                        Tcant++;
+                        pos1 = (Tcant * 4) - (pos1 - 1) * 4;
+                        pos2 = (Tcant * 4) - (pos2 - 1) * 4;
+                        if(pos1 < 0) {pos1 = pos1 * -1;}
+                        if(pos2 < 0) {pos2 = pos2 * -1;}
+                        
                         //
-                        almacenarOperacion += "\nlw $t0, " + (pos1 * - 1) + "($sp) ";
-                        almacenarOperacion += "\nlw $t1, " + (pos2 * - 1) + "($sp) ";
+                        almacenarOperacion += "\nlw $t0, " + (pos1) + "($sp) ";
+                        almacenarOperacion += "\nlw $t1, " + (pos2) + "($sp) ";
 
                         if (listOper[1].equals("+")) {
                             almacenarOperacion += "\nadd $t2, $t0, $t1";
@@ -196,15 +201,18 @@ public class generadorMIPS {
                     boolean isComp = input.matches(patternComp);
                     if (isComp) {
                         texto += "\naddi $sp, $sp, -4";
+                        Tcant++;
                         String[] listComp = input.split("(?<=[\\>\\<\\=\\!])|(?=[\\>\\<\\=\\!])");
                         int pos1 = Integer.parseInt(listComp[0].replaceAll("\\D", ""));
                         int pos2 = Integer.parseInt(listComp[2].replaceAll("\\D", ""));
-                        pos1 = (Tcant * 4) - pos1 * 4;
-                        pos2 = (Tcant * 4) - pos2 * 4;
-                        Tcant++;
+                        pos1 = (Tcant * 4) - (pos1 - 1) * 4;
+                        pos2 = (Tcant * 4) - (pos2 - 1) * 4;
+
+                        if(pos1 < 0) {pos1 = pos1 * -1;}
+                        if(pos2 < 0) {pos2 = pos2 * -1;}
                         //
-                        texto += "\nlw $t0, " + (pos1 * -1) + "($sp)";
-                        texto += "\nlw $t1, " + (pos2 * -1) + "($sp)";
+                        texto += "\nlw $t0, " + (pos1) + "($sp)";
+                        texto += "\nlw $t1, " + (pos2) + "($sp)";
 
                         if (listComp[1].equals(">")) {
                             texto += "\nsgt $t2, $t0, $t1";
@@ -239,10 +247,11 @@ public class generadorMIPS {
                 } catch (NumberFormatException e) {
                     String value = partesEquals[1].trim();
                     int pos = Integer.parseInt(value.replaceAll("\\D", ""));
-                    pos = (Tcant * 4) - pos * 4;
-                    pos = pos * -1;
+
                     Tcant++;
                     texto += "\naddi $sp, $sp, -4";
+                    pos = (Tcant * 4) - (pos - 1) * 4;
+                    if(pos < 0) {pos = pos * -1;}
                     almacenarFlotante += "\nlw $t0, " + pos + "($sp)";
                     almacenarFlotante += "\nmtc1 $t0, $f" + pos;
                     almacenarFlotante += "\ns.s $f" + pos + ", 0($sp)";
@@ -264,11 +273,13 @@ public class generadorMIPS {
             int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
             int pos2 = Integer.parseInt(var2.replaceAll("\\D", ""));
 
-            pos1 = (Tcant * 4) -  pos1 * 4;
-            pos2 = (Tcant * 4) -  pos2 * 4;
+            pos1 = (Tcant * 4) -  (pos1 - 1) * 4;
+            pos2 = (Tcant * 4) -  (pos2 - 1) * 4;
+            if(pos1 < 0) {pos1 = pos1 * -1;}
+            if(pos2 < 0) {pos2 = pos2 * -1;}
 
-            texto += "\nlw $t0, " + (pos1 * - 1) + "($sp)";
-            texto += "\nlw $t1, " + (pos2 * - 1) + "($sp)";
+            texto += "\nlw $t0, " + (pos1) + "($sp)";
+            texto += "\nlw $t1, " + (pos2) + "($sp)";
 
             switch (operator) {
                 case "==":
@@ -279,10 +290,10 @@ public class generadorMIPS {
             String var1 = partes[1];
             String label = partes[3]; // La etiqueta a saltar
     
-            int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
-            pos1 = (Tcant * 4) - pos1 * 4;
-    
-            texto += "\nlw $t0, " + (pos1 * -1) + "($sp)";
+            int pos = Integer.parseInt(var1.replaceAll("\\D", ""));
+            pos = (Tcant * 4) - (pos - 1) * 4;
+            if(pos < 0) {pos = pos * -1;}
+            texto += "\nlw $t0, " + (pos) + "($sp)";
             texto += "\nbne $t0, $zero, " + label; // Saltar si $t0 no es cero
     
         }
@@ -294,7 +305,8 @@ public class generadorMIPS {
         if (partes[0].equals("read")) {
             String var = partes[1];
             int pos = Integer.parseInt(var.replaceAll("\\D", ""));
-            pos = (Tcant * 4) - pos * 4;
+            pos = (Tcant * 4) - (pos - 1) * 4;
+            if(pos < 0) {pos = pos * -1;}
             texto += generateReadCode("int", pos); // Asumimos que es un entero, puedes ajustar según el tipo
         }
         return texto;
@@ -336,7 +348,8 @@ public class generadorMIPS {
         if (partes[0].equals("print")) {
             String var = partes[1];
             int pos = Integer.parseInt(var.replaceAll("\\D", ""));
-            pos = (Tcant * 4) - pos * 4;
+            pos = (Tcant * 4) - (pos - 1) * 4;
+            if(pos < 0) {pos = pos * -1;}
             texto += generatePrintCode("int", pos); // Asumimos que es un entero, puedes ajustar según el tipo
         }
         return texto;

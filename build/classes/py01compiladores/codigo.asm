@@ -28,30 +28,30 @@ li $t0, 0x40800000
 mtc1 $t0, $f0
 s.s $f0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 4($sp)
-mtc1 $t0, $f4
-s.s $f4, 0($sp)
+lw $t0, 8($sp)
+mtc1 $t0, $f8
+s.s $f8, 0($sp)
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 4($sp) 
-lw $t1, 8($sp) 
+lw $t0, 8($sp) 
+lw $t1, 4($sp) 
 add $t2, $t0, $t1
 sw $t2, 0($sp)
 addi $sp, $sp, -4
 li $v0, 5
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 4($sp) 
-lw $t1, 8($sp) 
+lw $t0, 8($sp) 
+lw $t1, 4($sp) 
 add $t2, $t0, $t1
 sw $t2, 0($sp)
-lw $t0, -8($sp)
+lw $t0, 0($sp)
 li $v0, 1
 move $a0, $t0
 syscall
-lw $t0, -12($sp)
+lw $t0, 4($sp)
 li $v0, 1
 move $a0, $t0
 syscall
@@ -70,11 +70,11 @@ sw $v0, 0($sp)
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, 16($sp)
-lw $t1, 12($sp)
-beq $t0, $t1, begin_case_11
 lw $t0, 8($sp)
-lw $t1, -4($sp)
+lw $t1, 4($sp)
+beq $t0, $t1, begin_case_11
+lw $t0, 0($sp)
+lw $t1, 12($sp)
 beq $t0, $t1, begin_case_11
 j end_case_11
 
@@ -82,7 +82,7 @@ begin_case_11:
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, -20($sp)
+lw $t0, 12($sp)
 li $v0, 1
 move $a0, $t0
 syscall
@@ -94,11 +94,11 @@ sw $v0, 0($sp)
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, 24($sp)
-lw $t1, 20($sp)
-beq $t0, $t1, begin_case_12
 lw $t0, 16($sp)
-lw $t1, -16($sp)
+lw $t1, 12($sp)
+beq $t0, $t1, begin_case_12
+lw $t0, 8($sp)
+lw $t1, 24($sp)
 beq $t0, $t1, begin_case_12
 j end_case_12
 
@@ -110,8 +110,8 @@ addi $sp, $sp, -4
 li $v0, 10
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 24($sp) 
-lw $t1, 28($sp) 
+lw $t0, 12($sp) 
+lw $t1, 16($sp) 
 add $t2, $t0, $t1
 sw $t2, 0($sp)
 addi $sp, $sp, -4
@@ -125,8 +125,8 @@ addi $sp, $sp, -4
 li $v0, 10
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 24($sp) 
-lw $t1, 28($sp) 
+lw $t0, 12($sp) 
+lw $t1, 16($sp) 
 mul $t2, $t0, $t1
 sw $t2, 0($sp)
 addi $sp, $sp, -4
@@ -136,13 +136,13 @@ addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 24($sp) 
-lw $t1, 28($sp) 
+lw $t0, 12($sp) 
+lw $t1, 16($sp) 
 mul $t2, $t0, $t1
 sw $t2, 0($sp)
 addi $sp, $sp, -4
-lw $t0, 16($sp) 
-lw $t1, 28($sp) 
+lw $t0, 4($sp) 
+lw $t1, 16($sp) 
 mul $t2, $t0, $t1
 sw $t2, 0($sp)
 addi $sp, $sp, -4
@@ -165,11 +165,11 @@ sw $v0, 0($sp)
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, 32($sp)
-lw $t1, 28($sp)
-beq $t0, $t1, begin_case_21
 lw $t0, 24($sp)
-lw $t1, 12($sp)
+lw $t1, 20($sp)
+beq $t0, $t1, begin_case_21
+lw $t0, 16($sp)
+lw $t1, 4($sp)
 beq $t0, $t1, begin_case_21
 j end_case_21
 
@@ -177,10 +177,12 @@ begin_case_21:
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, -36($sp)
+lw $t0, 28($sp)
 li $v0, 1
 move $a0, $t0
 syscall
+
+end_case_21:
 
 end_switch_2:
 
@@ -192,11 +194,11 @@ addi $sp, $sp, -4
 li $v0, 5
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, -128($sp)
-lw $t1, -124($sp)
+lw $t0, 100($sp)
+lw $t1, 106($sp)
 sgt $t2, $t0, $t1
 sw $t2, 0($sp)
-lw $t0, -124($sp)
+lw $t0, 106($sp)
 bne $t0, $zero, begin_if_1
 j begin_else_1
 
@@ -204,7 +206,7 @@ begin_if_1:
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, 124($sp)
+lw $t0, 106($sp)
 li $v0, 1
 move $a0, $t0
 syscall
@@ -222,11 +224,11 @@ addi $sp, $sp, -4
 li $v0, 7
 sw $v0, 0($sp)
 addi $sp, $sp, -4
-lw $t0, -128($sp)
-lw $t1, -124($sp)
+lw $t0, 106($sp)
+lw $t1, 106($sp)
 slt $t2, $t0, $t1
 sw $t2, 0($sp)
-lw $t0, -124($sp)
+lw $t0, 106($sp)
 bne $t0, $zero, begin_while_block_1
 j begin_end_while_1
 
@@ -234,7 +236,7 @@ begin_while_block_1:
 addi $sp, $sp, -4
 li $v0, 1
 sw $v0, 0($sp)
-lw $t0, 124($sp)
+lw $t0, 106($sp)
 li $v0, 1
 move $a0, $t0
 syscall

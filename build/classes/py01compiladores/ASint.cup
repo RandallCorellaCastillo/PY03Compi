@@ -1417,7 +1417,7 @@ CASE_LIST ::=  CASE_LIST_DEF:csd LINE DECLENDCASE CASE_LIST {:
                                                 System.out.println("Parser: Err: El valor asignado del case debe ser un numero entero."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                             } 
                                             :} 
-              | CASE_LIST_DEF:csd LINE {:
+              | CASE_LIST_DEF:csd LINE DECLENDCASE {:
                                     String[] info = csd.toString().split(":");
                                     if(info[0].equals("null")) {
                                         System.out.println("Parser: Err: El valor asignado del case debe ser un numero entero."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
