@@ -74,8 +74,6 @@ public class generadorMIPS {
     public void dataGeneratorString(){
         int cont = 0;
         for (String linea : lineas) {
-
-
             String[] partes = linea.split("=");
             if(partes.length >= 2) {
                 String string = partes[1];
@@ -276,7 +274,7 @@ public class generadorMIPS {
         switch (tipoDato) {
             case "String":
                 code.append("\nli $v0, 4"); // Syscall para imprimir una cadena
-                code.append("\nla $a0, ").append(pos); // Dirección de la cadena en la pila
+                code.append("\nla $a0, String" + Scant++); // Dirección de la cadena en la pila
                 code.append("\nsyscall");
                 break;
             case "int":
