@@ -3786,7 +3786,7 @@ class CUP$Parser$actions {
               String RESULT =null;
 		 
                                         if (currentStructure == "switch"){
-                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1) + ":" );
+                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1));
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "for"){

@@ -61,7 +61,7 @@ t24=t22+t23
 local_data_int otra
 t25=t24
 otra=t25
-goto end_switch_1:
+goto end_switch_1
 end_case_12:
 t26= -1
 t27=10

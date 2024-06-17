@@ -1472,7 +1472,7 @@ RETURN_STATEMENT ::=  RETURN SEP VALUE:v ENDLINE {:
 
 BREAK_STATEMENT ::=  BREAK ENDLINE {: 
                                         if (currentStructure == "switch"){
-                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1) + ":" );
+                                            cod3D.append("\ngoto end_switch_" + (currentSwitch - 1));
                                             //currentStructure = "";
                                         }
                                         if (currentStructure == "for"){

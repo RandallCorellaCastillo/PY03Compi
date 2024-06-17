@@ -164,13 +164,15 @@ public class PY01Compiladores {
 
         //PY3
         String rutaDelArchivo = currentDirectory + "\\src\\py01compiladores\\CodigoTresDimensiones.txt";
+        
+        String rutaDelArchivoMips = currentDirectory + "\\src\\py01compiladores\\codigo.asm";
         generadorMIPS generador = new generadorMIPS(rutaDelArchivo);
         List<String> lineasDelArchivo = generador.getLineas();
         generador.dataGeneratorVariables();
         generador.dataGeneratorString();
         generador.textGenerator();
         generador.macrosGenerator();
-        generador.textTostring();
+        generador.saveStringToFile(generador.textTostring(), rutaDelArchivoMips);
         
         /*
         for (String linea : lineasDelArchivo) {

@@ -1,6 +1,7 @@
 package py01compiladores;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class generadorMIPS {
         this.ruta = ruta;
         this.lineas = new ArrayList<>();
         this.result = ".data";
+        this.Tcant = 0;
         this.Scant = 1;
         leerYDividirArchivo();
     }
@@ -81,7 +83,7 @@ public class generadorMIPS {
                 if (matcher.matches()) {
                     cont++;
                     String mipsCode = "";
-                    mipsCode = "String" + cont +": .asciiz " + string;
+                    mipsCode = "String" + cont +": .asciiz \"" + string + "\"";
                     result += "\n" + mipsCode;
                 }
             }
@@ -127,7 +129,7 @@ public class generadorMIPS {
         return texto;
     }
 
-    public String asignacionText(String linea, String etiqueta, String[] partesEquals){
+    public String asignacionText(String linea, String etiqueta, String[] partesEquals) {
         String texto = "";  
         if (linea.contains("=")) {
             if (etiqueta.matches("^\\s*[t][0-9]+\\s*$")) {
@@ -145,6 +147,15 @@ public class generadorMIPS {
                         almacenarEntero += "\nli $v0, " + input;
                         almacenarEntero += "\nsw $v0, 0($sp)";
                         texto += almacenarEntero;
+                    }
+                    if(partesEquals[1].trim().matches("^\\s*[t][0-9]+\\s*$")) {
+                        texto += "\naddi $sp, $sp, -4";
+                        int pos = Integer.parseInt(partesEquals[1].replaceAll("\\D", ""));
+                        pos = (Tcant * 4) - pos * 4;
+                        Tcant++;
+                        String almacenarValor = "";
+                        almacenarValor += "\nlw $t0, " + (pos * - 1) + "($sp) ";
+                        almacenarValor += "\nsw $t0, 0($sp)";
                     }
                     String patternOper = "\\b\\w+\\d+\\s*([-+*/])\\s*\\w+\\d+\\b"; // Regex para el operando.
                     boolean isOper = input.matches(patternOper);
@@ -211,6 +222,31 @@ public class generadorMIPS {
 
                         texto += "\nsw $t2, 0($sp)";
                     }
+                }
+            }  else if(etiqueta.matches("^\\s*[f][0-9]+\\s*$")) {
+                String almacenarFlotante  = "";
+                try {
+                    String input = partesEquals[1].trim();
+                    float valorFlotante = Float.parseFloat(input);
+                    int valorHexadecimal = Float.floatToIntBits(valorFlotante);
+                    String hexString = String.format("0x%08X", valorHexadecimal);
+                    Tcant++;
+                    texto += "\naddi $sp, $sp, -4";
+                    almacenarFlotante += "\nli $t0, " + hexString;
+                    almacenarFlotante += "\nmtc1 $t0, $f0";
+                    almacenarFlotante += "\ns.s $f0, 0($sp)";
+                    texto += almacenarFlotante;
+                } catch (NumberFormatException e) {
+                    String value = partesEquals[1].trim();
+                    int pos = Integer.parseInt(value.replaceAll("\\D", ""));
+                    pos = (Tcant * 4) - pos * 4;
+                    pos = pos * -1;
+                    Tcant++;
+                    texto += "\naddi $sp, $sp, -4";
+                    almacenarFlotante += "\nlw $t0, " + pos + "($sp)";
+                    almacenarFlotante += "\nmtc1 $t0, $f" + pos;
+                    almacenarFlotante += "\ns.s $f" + pos + ", 0($sp)";
+                    texto += almacenarFlotante;
                 }
             }
         }
@@ -361,8 +397,8 @@ public class generadorMIPS {
                     "jr $ra ";
     }
     
-    public void textTostring() {
-        System.out.println(result);
+    public String textTostring() {
+        return result;
     }
 
     public void escribirArchivo(String rutaSalida) {
@@ -370,6 +406,15 @@ public class generadorMIPS {
             writer.write(result);
         } catch (IOException e) {
             System.err.println("Error al escribir el archivo: " + e.getMessage());
+        }
+    }
+
+    public void saveStringToFile(String data, String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(data);
+            System.out.println("Archivo guardado exitosamente en " + filePath);
+        } catch (IOException e) {
+            System.err.println("Ocurrió un error al guardar el archivo: " + e.getMessage());
         }
     }
     
