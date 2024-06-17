@@ -35,7 +35,8 @@ func:bool:func2_
 	param:bool:b1;
 	param:int:i1;
 	glob:char:ch24='a'; //semantico
-        if(true)_print(1);_
+        if(7>5)_print(1);_
+        while(12<7)_print(1);_
 	return:false; //generar error con -6.5 y con i1
 _
 

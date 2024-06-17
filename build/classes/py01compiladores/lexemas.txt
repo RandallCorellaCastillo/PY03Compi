@@ -158,7 +158,22 @@ Token: 13 a
 Token: 55 ;
 Token: 33 if
 Token: 50 (
-Token: 31 true
+Token: 10 7
+Token: 17 >
+Token: 10 5
+Token: 51 )
+Token: 54 _
+Token: 44 print
+Token: 50 (
+Token: 10 1
+Token: 51 )
+Token: 55 ;
+Token: 54 _
+Token: 35 while
+Token: 50 (
+Token: 10 12
+Token: 18 <
+Token: 10 7
 Token: 51 )
 Token: 54 _
 Token: 44 print
@@ -212,4 +227,4 @@ Token: 25 :
 Token: 11 b1
 Token: 55 ;
 Token: 54 _
-Cantidad de lexemas encontrados: 214
+Cantidad de lexemas encontrados: 229

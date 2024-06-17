@@ -488,7 +488,7 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
 
             | STRING_LITERAL:s {:
                                 String miTempId = "t"+currentTemp++;
-                                cod3D.append("\n" +  miTempId + "= '" + s.toString() + "'");
+                                cod3D.append("\n" +  miTempId + "='" + s.toString() + "'");
                                 RESULT = "String:" + miTempId; 
                                :}
             | STRING_SINGLE:s {:
@@ -519,7 +519,7 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
                                                                                     currentTipePostOrden = 1;
                                                                                     String miTempId = baseTemp + currentTemp++;
                                                                                     currentPostOrden = miTempId;
-                                                                                    cod3D.append("\n" + miTempId + " = " + i.toString());
+                                                                                    cod3D.append("\n" + miTempId +"=" + i.toString());
 
                                                                                     Object[] dataArray = new Object[3];
                                                                                     dataArray[0] = postOrden;
@@ -545,7 +545,7 @@ FACTOR  ::=  PARENTA EXP_ARIT:e PARENTC {:RESULT = e;:}
                                                                                 currentTipePostOrden = 0;
                                                                                 String miTempId = baseTemp + currentTemp++;
                                                                                 currentPostOrden = miTempId;
-                                                                                cod3D.append("\n" + miTempId + " = " + i.toString());
+                                                                                cod3D.append("\n" + miTempId +"=" + i.toString());
 
                                                                                 Object[] dataArray = new Object[3];
                                                                                 dataArray[0] = postOrden;
@@ -673,11 +673,11 @@ EXP_LOG ::= OPER_LOG:op1 {: RESULT = op1;
                                     String miTempId =  currentPostOrden.split("")[0] + currentTemp++;
 
                                     if(currentTipePostOrden == 0) {
-                                        cod3D.append("\n" + miTempId + " = 1");
-                                        cod3D.append("\n" + currentPostOrden + " = " + currentPostOrden + " + " + miTempId);
+                                        cod3D.append("\n" + miTempId + "=1");
+                                        cod3D.append("\n" + currentPostOrden +"=" + currentPostOrden + " + " + miTempId);
                                     } else {
-                                        cod3D.append("\n" + miTempId + " = 1");
-                                        cod3D.append("\n" + currentPostOrden + " = " + currentPostOrden + " - " + miTempId);
+                                        cod3D.append("\n" + miTempId + "=1");
+                                        cod3D.append("\n" + currentPostOrden +"=" + currentPostOrden + " - " + miTempId);
                                     }
                                     break;
                                     
@@ -863,8 +863,8 @@ ASIG::= IDENTIFIER:ID EQ VALUE:v ENDLINE
                                     String[] info = v.toString().split(":");
                                     String baseTemp = "t";
                                     String miTempId = baseTemp + currentTemp++;
-                                    cod3D.append("\n" + miTempId + " = " + info[1]);
-                                    cod3D.append("\n" + ID.toString() + " = " + miTempId);
+                                    cod3D.append("\n" + miTempId +"=" + info[1]);
+                                    cod3D.append("\n" + ID.toString() +"=" + miTempId);
 
                                 :};
 
@@ -937,8 +937,8 @@ DECLOC::= LOC SEP TYPES:tloc SEP IDENTIFIER:ID EQ VALUE:v ENDLINE {:
                                                                             if(info[0].equals("float")) baseTemp = "f";
                                                                             String miTempId = baseTemp + currentTemp++;
                                                                             cod3D.append("\nlocal_data_" + tloc.toString() + " " + ID.toString());
-                                                                            cod3D.append("\n" + miTempId + " = " + info[1]);
-                                                                            cod3D.append("\n" + ID.toString() + " = " + miTempId);
+                                                                            cod3D.append("\n" + miTempId +"=" + info[1]);
+                                                                            cod3D.append("\n" + ID.toString() +"=" + miTempId);
                                                                             }
 
                                                                         else {System.out.println("Parser: Err : El valor asignado no es compatible con el tipo declarado de la variable: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));} 
@@ -1217,7 +1217,7 @@ VALUE_LIST ::= VALUE:v COMA VALUE_LIST:vl {:
                                                 RESULT = v.toString(); 
                                                 String baseTemp = "t";
                                                 String miTempId = baseTemp + currentTemp++;
-                                                cod3D.append("\nArrayElement " + miTempId + " = " + info1[1]);
+                                                cod3D.append("\nArrayElement " + miTempId +"=" + info1[1]);
                                             }
                                             else { 
                                                 RESULT = "null:null"; 
@@ -1228,13 +1228,10 @@ VALUE_LIST ::= VALUE:v COMA VALUE_LIST:vl {:
                             String[] info1 = v.toString().split(":"); 
                             String baseTemp = "t";
                             String miTempId = baseTemp + currentTemp++;
-                            cod3D.append("\nArrayElement " + miTempId + " = " + info1[1]);:} ;
+                            cod3D.append("\nArrayElement " + miTempId +"=" + info1[1]);:} ;
 
 
 PRINTLN ::= PRINTF PARENTA PARENTC ENDLINE {: cod3D.append("\nprint '\n'");:} ;
-//PRINTLN ::= PRINTF PARENTA STRING_LITERAL:s PARENTC ENDLINE {: cod3D.append("\nprint '" + s.toString() + "'");:} ;
-//PRINTLN ::= PRINTF PARENTA STRING_SINGLE:s PARENTC ENDLINE {: cod3D.append("\nprint '" + s.toString() + "'");:} ;
-//PRINTLN ::= PRINTF PARENTA IDENTIFIER:id PARENTC ENDLINE {: cod3D.append("\nprint " + id.toString());:};
 
 PRINTLN ::= PRINTF PARENTA VALUE:v1 PARENTC ENDLINE {: 
                                                     String[] info1 = v1.toString().split(":"); 
@@ -1374,7 +1371,7 @@ FOR_STATEMENT ::= FOR_STATEMENT_DEF:fsd UNDERS LINE UNDERS {:
                                                             if(info[1].equals("null")) {
                                                                 cod3D.append("\nt" +  currentTemp++ + " = 1");
                                                                 cod3D.append("\n" +  miTempId + " = cont");
-                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\n" +  miTempId +"=" +  miTempId + " + " + "t" +  (currentTemp-1));
                                                                 cod3D.append("\ncont = " + miTempId);
                                                                 cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
                                                                 cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
@@ -1382,7 +1379,7 @@ FOR_STATEMENT ::= FOR_STATEMENT_DEF:fsd UNDERS LINE UNDERS {:
                                                             } else {
                                                                 cod3D.append("\nt" +  currentTemp++ + " = jump");
                                                                 cod3D.append("\n" +  miTempId + " = cont");
-                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\n" +  miTempId +"=" +  miTempId + " + " + "t" +  (currentTemp-1));
                                                                 cod3D.append("\ncont = " + miTempId);
                                                                 cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
                                                                 cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
@@ -1404,11 +1401,11 @@ SWITCH_STATEMENT_DEF ::= SWITCH PARENTA EXP_ARIT:exp PARENTC {:
                                                             //validarScopeVariables
                                                             if(info[0].equals("int")) {
                                                                 cod3D.append("\n\nbegin_switch_" + currentSwitch++ +  ":");
-                                                                cod3D.append("\nt" + currentTemp++ +  " = " + info[1]);
+                                                                cod3D.append("\nt" + currentTemp++ + "=" + info[1]);
                                                                 currentSwitchValue = info[1];
                                                                 cod3D.append("\ndataint flag");
-                                                                cod3D.append("\nt" +  currentTemp++ + " = 0");
-                                                                cod3D.append("\nflag = " + "t" + (currentTemp - 1));
+                                                                cod3D.append("\nt" +  currentTemp++ + "=0");
+                                                                cod3D.append("\nflag=" + "t" + (currentTemp - 1));
                                                             } else {
                                                                 System.out.println("Parser: Err: El resultado de la expresion o identificador de un switch debe ser entero"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                             }
@@ -1443,15 +1440,15 @@ DECLENDCASE ::= {:
 CASE_LIST_DEF ::= CASE SEP EXP_ARIT:exp SEP {:
                                         String[] info = exp.toString().split(":");
                                         if(info[0].equals("int")) {
-                                            cod3D.append("\nt" + currentTemp++ +  " = " +  "flag");
-                                            cod3D.append("\nt" + currentTemp++ +  " = " +  "1");
-                                            cod3D.append("\nif t"  + (currentTemp - 1) + " == t" + (currentTemp - 2) + " goto begin_case_" + (currentSwitch - 1) + currentCase);
+                                            cod3D.append("\nt" + currentTemp++ +  "=" +  "flag");
+                                            cod3D.append("\nt" + currentTemp++ +  "=" +  "1");
+                                            cod3D.append("\nif t"  + (currentTemp - 1) + "==t" + (currentTemp - 2) + " goto begin_case_" + (currentSwitch - 1) + currentCase);
                                             cod3D.append("\nif " + info[1] + "==" + currentSwitchValue + " goto begin_case_" + (currentSwitch - 1) + currentCase++);
                                             cod3D.append("\ngoto end_case_" + (currentSwitch - 1) + (currentCase - 1));
 
                                             cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1));
-                                            cod3D.append("\nt" + currentTemp +  " = " +  "1");
-                                            cod3D.append("\nflag" + " = t" + currentTemp++);
+                                            cod3D.append("\nt" + currentTemp + "=" +  "1");
+                                            cod3D.append("\nflag" + "=t" + currentTemp++);
                                             RESULT = (currentSwitch - 1) +  ":" + (currentCase - 1);
                                         } else {
                                             System.out.println("Parser: Err: El valor asignado del case debe ser un numero entero."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));

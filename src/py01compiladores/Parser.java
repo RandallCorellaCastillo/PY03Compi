@@ -938,6 +938,7 @@ currentSymbol = lex.next_token();
         this.symbolFactory = new DefaultSymbolFactory();
     }
     
+    
     public void syntax_error(Symbol s) {
         System.out.println("Error R de sintaxis: " +  s.value + " linea: " +  (s.left+1) +  " columna: " +  (s.right+1));
     }
@@ -983,6 +984,15 @@ currentSymbol = lex.next_token();
 
         }
         return true;
+    }
+
+    public static void invertirLista(ArrayList<String> lista) {
+        int size = lista.size();
+        for (int i = 0; i < size / 2; i++) {
+            String temp = lista.get(i);
+            lista.set(i, lista.get(size - 1 - i));
+            lista.set(size - 1 - i, temp);
+        }
     }
 
     public boolean validarScopeVariablesGlobales (String id) throws Exception {
@@ -1728,7 +1738,7 @@ class CUP$Parser$actions {
 		Object s = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
                                 String miTempId = "t"+currentTemp++;
-                                cod3D.append("\n" +  miTempId + "= '" + s.toString() + "'");
+                                cod3D.append("\n" +  miTempId + "='" + s.toString() + "'");
                                 RESULT = "String:" + miTempId; 
                                
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("FACTOR",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -1790,7 +1800,7 @@ class CUP$Parser$actions {
                                                                                     currentTipePostOrden = 1;
                                                                                     String miTempId = baseTemp + currentTemp++;
                                                                                     currentPostOrden = miTempId;
-                                                                                    cod3D.append("\n" + miTempId + " = " + i.toString());
+                                                                                    cod3D.append("\n" + miTempId +"=" + i.toString());
 
                                                                                     Object[] dataArray = new Object[3];
                                                                                     dataArray[0] = postOrden;
@@ -1826,7 +1836,7 @@ class CUP$Parser$actions {
                                                                                 currentTipePostOrden = 0;
                                                                                 String miTempId = baseTemp + currentTemp++;
                                                                                 currentPostOrden = miTempId;
-                                                                                cod3D.append("\n" + miTempId + " = " + i.toString());
+                                                                                cod3D.append("\n" + miTempId +"=" + i.toString());
 
                                                                                 Object[] dataArray = new Object[3];
                                                                                 dataArray[0] = postOrden;
@@ -2190,11 +2200,11 @@ class CUP$Parser$actions {
                                     String miTempId =  currentPostOrden.split("")[0] + currentTemp++;
 
                                     if(currentTipePostOrden == 0) {
-                                        cod3D.append("\n" + miTempId + " = 1");
-                                        cod3D.append("\n" + currentPostOrden + " = " + currentPostOrden + " + " + miTempId);
+                                        cod3D.append("\n" + miTempId + "=1");
+                                        cod3D.append("\n" + currentPostOrden +"=" + currentPostOrden + " + " + miTempId);
                                     } else {
-                                        cod3D.append("\n" + miTempId + " = 1");
-                                        cod3D.append("\n" + currentPostOrden + " = " + currentPostOrden + " - " + miTempId);
+                                        cod3D.append("\n" + miTempId + "=1");
+                                        cod3D.append("\n" + currentPostOrden +"=" + currentPostOrden + " - " + miTempId);
                                     }
                                     break;
                                     
@@ -2611,8 +2621,8 @@ class CUP$Parser$actions {
                                     String[] info = v.toString().split(":");
                                     String baseTemp = "t";
                                     String miTempId = baseTemp + currentTemp++;
-                                    cod3D.append("\n" + miTempId + " = " + info[1]);
-                                    cod3D.append("\n" + ID.toString() + " = " + miTempId);
+                                    cod3D.append("\n" + miTempId +"=" + info[1]);
+                                    cod3D.append("\n" + ID.toString() +"=" + miTempId);
 
                                 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("ASIG",4, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -2770,8 +2780,8 @@ class CUP$Parser$actions {
                                                                             if(info[0].equals("float")) baseTemp = "f";
                                                                             String miTempId = baseTemp + currentTemp++;
                                                                             cod3D.append("\nlocal_data_" + tloc.toString() + " " + ID.toString());
-                                                                            cod3D.append("\n" + miTempId + " = " + info[1]);
-                                                                            cod3D.append("\n" + ID.toString() + " = " + miTempId);
+                                                                            cod3D.append("\n" + miTempId +"=" + info[1]);
+                                                                            cod3D.append("\n" + ID.toString() +"=" + miTempId);
                                                                             }
 
                                                                         else {System.out.println("Parser: Err : El valor asignado no es compatible con el tipo declarado de la variable: " + ID.toString()+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));} 
@@ -3150,10 +3160,11 @@ class CUP$Parser$actions {
 		String v = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
 		
                                     String[] info = v.toString().split(":");
-                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
-                                    System.out.println("currentParam: " + currentParam);
+                                    //System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    //System.out.println("currentParam: " + currentParam);
                                     
                                     // Validar el parámetro actual
+                                    invertirLista(paramlist);
                                     if (currentParam < paramlist.size()) {
                                         System.out.println("info: " + Arrays.toString(info));
                                         System.out.println("expected: " + paramlist.get(currentParam));
@@ -3165,11 +3176,12 @@ class CUP$Parser$actions {
                                             System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                         }
                                         
-                                        // Incrementar para el siguiente parámetro
                                         currentParam++;
                                     } else {
                                         System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                     }
+                                    invertirLista(paramlist);
+
                                 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PARAMS",30, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -3184,10 +3196,9 @@ class CUP$Parser$actions {
 		String v = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
                                     String[] info = v.toString().split(":");
-                                    System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
-                                    System.out.println("currentParam: " + currentParam);
-                                    
-                                    // Validar el parámetro actual
+                                    //System.out.println("paramlist: " + paramlist.toString() + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
+                                    //System.out.println("currentParam: " + currentParam);
+                                    invertirLista(paramlist);
                                     if (currentParam < paramlist.size()) {
                                         System.out.println("info: " + Arrays.toString(info));
                                         System.out.println("expected: " + paramlist.get(currentParam));
@@ -3198,12 +3209,12 @@ class CUP$Parser$actions {
                                         if (!actualType.equals(expectedType)) {
                                             System.out.println("Parser: Err : Los parametros no son compatibles" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                         }
-                                        
-                                        // Incrementar para el siguiente parámetro
+
                                         currentParam++;
                                     } else {
                                         System.out.println("Parser: Err : Cantidad de parametros incompatible" + ": Linea : " + (currentSymbol.left + 1) + ": Columna : " + (currentSymbol.right + 1));
                                     }
+                                    invertirLista(paramlist);
                                 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PARAMS",30, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -3277,7 +3288,7 @@ class CUP$Parser$actions {
                                                 RESULT = v.toString(); 
                                                 String baseTemp = "t";
                                                 String miTempId = baseTemp + currentTemp++;
-                                                cod3D.append("\nArrayElement " + miTempId + " = " + info1[1]);
+                                                cod3D.append("\nArrayElement " + miTempId +"=" + info1[1]);
                                             }
                                             else { 
                                                 RESULT = "null:null"; 
@@ -3299,7 +3310,7 @@ class CUP$Parser$actions {
                             String[] info1 = v.toString().split(":"); 
                             String baseTemp = "t";
                             String miTempId = baseTemp + currentTemp++;
-                            cod3D.append("\nArrayElement " + miTempId + " = " + info1[1]);
+                            cod3D.append("\nArrayElement " + miTempId +"=" + info1[1]);
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("VALUE_LIST",33, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -3575,7 +3586,7 @@ class CUP$Parser$actions {
                                                             if(info[1].equals("null")) {
                                                                 cod3D.append("\nt" +  currentTemp++ + " = 1");
                                                                 cod3D.append("\n" +  miTempId + " = cont");
-                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\n" +  miTempId +"=" +  miTempId + " + " + "t" +  (currentTemp-1));
                                                                 cod3D.append("\ncont = " + miTempId);
                                                                 cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
                                                                 cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
@@ -3583,7 +3594,7 @@ class CUP$Parser$actions {
                                                             } else {
                                                                 cod3D.append("\nt" +  currentTemp++ + " = jump");
                                                                 cod3D.append("\n" +  miTempId + " = cont");
-                                                                cod3D.append("\n" +  miTempId + " = " +  miTempId + " + " + "t" +  (currentTemp-1));
+                                                                cod3D.append("\n" +  miTempId +"=" +  miTempId + " + " + "t" +  (currentTemp-1));
                                                                 cod3D.append("\ncont = " + miTempId);
                                                                 cod3D.append("\nif " + miTempId +  " <= cant goto begin_for_body_" + (currentFor - 1));
                                                                 cod3D.append("\n\ngoto end_for_" + (currentFor - 1));
@@ -3621,11 +3632,11 @@ class CUP$Parser$actions {
                                                             //validarScopeVariables
                                                             if(info[0].equals("int")) {
                                                                 cod3D.append("\n\nbegin_switch_" + currentSwitch++ +  ":");
-                                                                cod3D.append("\nt" + currentTemp++ +  " = " + info[1]);
+                                                                cod3D.append("\nt" + currentTemp++ + "=" + info[1]);
                                                                 currentSwitchValue = info[1];
                                                                 cod3D.append("\ndataint flag");
-                                                                cod3D.append("\nt" +  currentTemp++ + " = 0");
-                                                                cod3D.append("\nflag = " + "t" + (currentTemp - 1));
+                                                                cod3D.append("\nt" +  currentTemp++ + "=0");
+                                                                cod3D.append("\nflag=" + "t" + (currentTemp - 1));
                                                             } else {
                                                                 System.out.println("Parser: Err: El resultado de la expresion o identificador de un switch debe ser entero"+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));
                                                             }
@@ -3721,15 +3732,15 @@ class CUP$Parser$actions {
 		
                                         String[] info = exp.toString().split(":");
                                         if(info[0].equals("int")) {
-                                            cod3D.append("\nt" + currentTemp++ +  " = " +  "flag");
-                                            cod3D.append("\nt" + currentTemp++ +  " = " +  "1");
-                                            cod3D.append("\nif t"  + (currentTemp - 1) + " == t" + (currentTemp - 2) + " goto begin_case_" + (currentSwitch - 1) + currentCase);
+                                            cod3D.append("\nt" + currentTemp++ +  "=" +  "flag");
+                                            cod3D.append("\nt" + currentTemp++ +  "=" +  "1");
+                                            cod3D.append("\nif t"  + (currentTemp - 1) + "==t" + (currentTemp - 2) + " goto begin_case_" + (currentSwitch - 1) + currentCase);
                                             cod3D.append("\nif " + info[1] + "==" + currentSwitchValue + " goto begin_case_" + (currentSwitch - 1) + currentCase++);
                                             cod3D.append("\ngoto end_case_" + (currentSwitch - 1) + (currentCase - 1));
 
                                             cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1));
-                                            cod3D.append("\nt" + currentTemp +  " = " +  "1");
-                                            cod3D.append("\nflag" + " = t" + currentTemp++);
+                                            cod3D.append("\nt" + currentTemp + "=" +  "1");
+                                            cod3D.append("\nflag" + "=t" + currentTemp++);
                                             RESULT = (currentSwitch - 1) +  ":" + (currentCase - 1);
                                         } else {
                                             System.out.println("Parser: Err: El valor asignado del case debe ser un numero entero."+ ": Linea : " + (currentSymbol.left + 1) +": Columna : " + (currentSymbol.right + 1));

@@ -1,31 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
-        <file>
-            <url>src/py01compiladores/ASint.cup</url>
-            <bookmark id="1">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-            <bookmark id="2">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< Updated upstream
-            <file>file:/C:/Users/truez/Documents/GitHub/PY03Compi/src/py01compiladores/CodigoTresDimensiones.txt</file>
-            <file>file:/C:/Users/truez/Documents/GitHub/PY03Compi/src/py01compiladores/test.txt</file>
-=======
             <file>file:/C:/Users/johan/OneDrive/Documentos/Semestre%202024/Compiladores/Proyectos/PY03Compi/src/py01compiladores/ASint.cup</file>
             <file>file:/C:/Users/johan/OneDrive/Documentos/Semestre%202024/Compiladores/Proyectos/PY03Compi/src/py01compiladores/CodigoTresDimensiones.txt</file>
+            <file>file:/C:/Users/johan/OneDrive/Documentos/Semestre%202024/Compiladores/Proyectos/PY03Compi/src/py01compiladores/PY01Compiladores.java</file>
             <file>file:/C:/Users/johan/OneDrive/Documentos/Semestre%202024/Compiladores/Proyectos/PY03Compi/src/py01compiladores/test.txt</file>
             <file>file:/C:/Users/johan/OneDrive/Documentos/Semestre%202024/Compiladores/Proyectos/PY03Compi/src/py01compiladores/generadorMIPS.java</file>
->>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>
