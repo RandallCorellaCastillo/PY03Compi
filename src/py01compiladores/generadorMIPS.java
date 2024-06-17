@@ -1,14 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-
 package py01compiladores;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,6 +70,8 @@ public class generadorMIPS {
     public void dataGeneratorString(){
         int cont = 0;
         for (String linea : lineas) {
+
+
             String[] partes = linea.split("=");
             if(partes.length >= 2) {
                 String string = partes[1];
@@ -88,7 +86,7 @@ public class generadorMIPS {
                 }
             }
         }
-   }
+    }
    
     public void textGenerator() {
         result += "\n.text" + "\n.globl main" + "\nmain:";
@@ -100,7 +98,10 @@ public class generadorMIPS {
                 String etiqueta = partesEquals[0];
                 result += etiquetaText(partes_, partes);     
                 result += asignacionText(linea, etiqueta, partesEquals);
-                result += gotoText(partes);       
+                result += gotoText(partes); // manejo de saltos
+                result += comparacionesIF(partes); // manejo de comparaciones 
+                result += printText(partes); // manejo de prints
+                result += readText(partes); // manejo de reads
             }
         }
     }
@@ -179,6 +180,37 @@ public class generadorMIPS {
                         }
                         texto += almacenarOperacion;
                     }
+
+                    String patternComp = "\\b\\w+\\d+\\s*(==|!=|>|<|>=|<=)\\s*\\w+\\d+\\b";
+                    boolean isComp = input.matches(patternComp);
+                    if (isComp) {
+                        texto += "\naddi $sp, $sp, -4";
+                        String[] listComp = input.split("(?<=[\\>\\<\\=\\!])|(?=[\\>\\<\\=\\!])");
+                        int pos1 = Integer.parseInt(listComp[0].replaceAll("\\D", ""));
+                        int pos2 = Integer.parseInt(listComp[2].replaceAll("\\D", ""));
+                        pos1 = (Tcant * 4) - pos1 * 4;
+                        pos2 = (Tcant * 4) - pos2 * 4;
+                        Tcant++;
+                        //
+                        texto += "\nlw $t0, " + (pos1 * -1) + "($sp)";
+                        texto += "\nlw $t1, " + (pos2 * -1) + "($sp)";
+
+                        if (listComp[1].equals(">")) {
+                            texto += "\nsgt $t2, $t0, $t1";
+                        } else if (listComp[1].equals("<")) {
+                            texto += "\nslt $t2, $t0, $t1";
+                        } else if (listComp[1].equals("==")) {
+                            texto += "\nseq $t2, $t0, $t1";
+                        } else if (listComp[1].equals("!=")) {
+                            texto += "\nsne $t2, $t0, $t1";
+                        } else if (listComp[1].equals(">=")) {
+                            texto += "\nsge $t2, $t0, $t1";
+                        } else if (listComp[1].equals("<=")) {
+                            texto += "\nsle $t2, $t0, $t1";
+                        }
+
+                        texto += "\nsw $t2, 0($sp)";
+                    }
                 }
             }
         }
@@ -186,54 +218,48 @@ public class generadorMIPS {
     }
 
     public String comparacionesIF(String[] partes) { 
-        String texto = "";  
-        if (partes[0].equals("if")) { // Manejar condicionales (if)
-            if (partes.length == 4 && partes[2].equals("goto")) { // Caso `if t2 goto label`
-                String var = partes[1];
-                String label = partes[3];
-                int pos = Integer.parseInt(var.replaceAll("\\D", "")) * 4;
-                result += "\nlw $t0, " + pos + "($sp)";
-                result += "\nbnez $t0, " + label; // Saltar si no es cero
-            } else if (partes.length > 2 && partes[2].startsWith("goto")) { // Caso `if (t1 == t2) goto label`
-                String condition = partes[1].substring(1, partes[1].length() - 1);
-                String[] condParts = condition.split(" ");
-                if (condParts.length == 3) {
-                    String var1 = condParts[0];
-                    String operator = condParts[1];
-                    String var2 = condParts[2];
-                    String label = partes[3]; // La etiqueta a saltar
+        String texto = ""; 
+        if (partes.length > 5 && partes[0].equals("if")) {
+            String var1 = partes[1];
+            String operator = partes[2];
+            String var2 = partes[3];
+            String label = partes[5]; // La etiqueta a saltar
 
-                    int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
-                    int pos2 = Integer.parseInt(var2.replaceAll("\\D", ""));
+            int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
+            int pos2 = Integer.parseInt(var2.replaceAll("\\D", ""));
 
-                    pos1 = (Tcant * 4) -  pos1 * 4;
-                    pos2 = (Tcant * 4) -  pos2 * 4;
+            pos1 = (Tcant * 4) -  pos1 * 4;
+            pos2 = (Tcant * 4) -  pos2 * 4;
 
-                    texto += "\nlw $t0, " + (pos1 * - 1) + "($sp)";
-                    texto += "\nlw $t1, " + (pos2 * - 1) + "($sp)";
+            texto += "\nlw $t0, " + (pos1 * - 1) + "($sp)";
+            texto += "\nlw $t1, " + (pos2 * - 1) + "($sp)";
 
-                    switch (operator) {
-                        case "==":
-                            result += "\nbeq $t0, $t1, " + label;
-                            break;
-                        case "!=":
-                            result += "\nbne $t0, $t1, " + label;
-                            break;
-                        case "<":
-                            result += "\nblt $t0, $t1, " + label;
-                            break;
-                        case "<=":
-                            result += "\nble $t0, $t1, " + label;
-                            break;
-                        case ">":
-                            result += "\nbgt $t0, $t1, " + label;
-                            break;
-                        case ">=":
-                            result += "\nbge $t0, $t1, " + label;
-                            break;
-                    }
-                }
+            switch (operator) {
+                case "==":
+                texto += "\nbeq $t0, $t1, " + label;
+                    break;
             }
+        } else if (partes.length > 2 && partes[0].equals("if")) {
+            String var1 = partes[1];
+            String label = partes[3]; // La etiqueta a saltar
+    
+            int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
+            pos1 = (Tcant * 4) - pos1 * 4;
+    
+            texto += "\nlw $t0, " + (pos1 * -1) + "($sp)";
+            texto += "\nbne $t0, $zero, " + label; // Saltar si $t0 no es cero
+    
+        }
+        return texto;
+    }
+
+    public String readText(String[] partes) {
+        String texto = "";
+        if (partes[0].equals("read")) {
+            String var = partes[1];
+            int pos = Integer.parseInt(var.replaceAll("\\D", ""));
+            pos = (Tcant * 4) - pos * 4;
+            texto += generateReadCode("int", pos); // Asumimos que es un entero, puedes ajustar según el tipo
         }
         return texto;
     }
@@ -269,12 +295,23 @@ public class generadorMIPS {
         return code.toString();
     }
 
+    public String printText(String[] partes) {
+        String texto = "";
+        if (partes[0].equals("print")) {
+            String var = partes[1];
+            int pos = Integer.parseInt(var.replaceAll("\\D", ""));
+            pos = (Tcant * 4) - pos * 4;
+            texto += generatePrintCode("int", pos); // Asumimos que es un entero, puedes ajustar según el tipo
+        }
+        return texto;
+    }
+
     private String generatePrintCode(String tipoDato, int pos) {
         StringBuilder code = new StringBuilder();
         switch (tipoDato) {
             case "String":
                 code.append("\nli $v0, 4"); // Syscall para imprimir una cadena
-                code.append("\nla $a0, String" + Scant++); // Dirección de la cadena en la pila
+                code.append("\nla $a0, ").append(pos); // Dirección de la cadena en la pila
                 code.append("\nsyscall");
                 break;
             case "int":
@@ -306,7 +343,7 @@ public class generadorMIPS {
     }
     
     public void macrosGenerator(){
-        result += "\n\n---------------------Macros---------------------\n";
+        result += "\n\n#---------------------Macros---------------------\n";
         //macro de immprimirEtiquetas.
         result += "\n#entrada: $a0, debe ser una etiqueta.\n" +
                     "#salida: $a0.\n" +
@@ -327,4 +364,13 @@ public class generadorMIPS {
     public void textTostring() {
         System.out.println(result);
     }
+
+    public void escribirArchivo(String rutaSalida) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(rutaSalida))) {
+            writer.write(result);
+        } catch (IOException e) {
+            System.err.println("Error al escribir el archivo: " + e.getMessage());
+        }
+    }
+    
 }
