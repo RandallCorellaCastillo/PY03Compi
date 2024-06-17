@@ -167,6 +167,7 @@ public class PY01Compiladores {
         generadorMIPS generador = new generadorMIPS(rutaDelArchivo);
         List<String> lineasDelArchivo = generador.getLineas();
         generador.dataGeneratorVariables();
+        generador.dataGeneratorString();
         generador.textGenerator();
         generador.macrosGenerator();
         generador.textTostring();

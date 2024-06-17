@@ -35,8 +35,8 @@ flag=t12
 t13=1
 t14=flag
 t15=1
-if t15==t14 goto begin_case_11
-if t13==t10 goto begin_case_11
+if t15 == t14 goto begin_case_11
+if t13 == t10 goto begin_case_11
 goto end_case_11
 
 begin_case_11:
@@ -48,8 +48,8 @@ end_case_11:
 t18=2
 t19=flag
 t20=1
-if t20==t19 goto begin_case_12
-if t18==t10 goto begin_case_12
+if t20 == t19 goto begin_case_12
+if t18 == t10 goto begin_case_12
 goto end_case_12
 
 begin_case_12:
@@ -86,8 +86,8 @@ flag=t36
 t37=10
 t38=flag
 t39=1
-if t39==t38 goto begin_case_21
-if t37==t34 goto begin_case_21
+if t39 == t38 goto begin_case_21
+if t37 == t34 goto begin_case_21
 goto end_case_21
 
 begin_case_21:

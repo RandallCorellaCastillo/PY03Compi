@@ -3734,8 +3734,8 @@ class CUP$Parser$actions {
                                         if(info[0].equals("int")) {
                                             cod3D.append("\nt" + currentTemp++ +  "=" +  "flag");
                                             cod3D.append("\nt" + currentTemp++ +  "=" +  "1");
-                                            cod3D.append("\nif t"  + (currentTemp - 1) + "==t" + (currentTemp - 2) + " goto begin_case_" + (currentSwitch - 1) + currentCase);
-                                            cod3D.append("\nif " + info[1] + "==" + currentSwitchValue + " goto begin_case_" + (currentSwitch - 1) + currentCase++);
+                                            cod3D.append("\nif t"  + (currentTemp - 1) + " == t" + (currentTemp - 2) + " goto begin_case_" + (currentSwitch - 1) + currentCase);
+                                            cod3D.append("\nif " + info[1] + " == " + currentSwitchValue + " goto begin_case_" + (currentSwitch - 1) + currentCase++);
                                             cod3D.append("\ngoto end_case_" + (currentSwitch - 1) + (currentCase - 1));
 
                                             cod3D.append("\n\nbegin_case_" + (currentSwitch - 1) + (currentCase - 1) + ":");

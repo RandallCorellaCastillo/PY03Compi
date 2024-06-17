@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.sound.sampled.LineUnavailableException;
 /**
@@ -24,11 +26,13 @@ public class generadorMIPS {
     private List<String> lineas;
     private String result;
     private int Tcant;
+    private int Scant;
 
     public generadorMIPS(String ruta) {
         this.ruta = ruta;
         this.lineas = new ArrayList<>();
         this.result = ".data";
+        this.Scant = 1;
         leerYDividirArchivo();
     }
 
@@ -67,6 +71,27 @@ public class generadorMIPS {
         result += "\nflag : .word 0" + "\ncont : .word 0" + "\ncant : .word 0" + "\njump : .word 0" + "\ninit : .word 0";
     }
     
+    public void dataGeneratorString(){
+        int cont = 0;
+        for (String linea : lineas) {
+
+
+            String[] partes = linea.split("=");
+            if(partes.length >= 2) {
+                String string = partes[1];
+                String regex = "'[^']*'";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(string);
+                if (matcher.matches()) {
+                    cont++;
+                    String mipsCode = "";
+                    mipsCode = "String" + cont +": .asciiz " + string;
+                    result += "\n" + mipsCode;
+                }
+            }
+        }
+   }
+   
     public void textGenerator() {
         result += "\n.text" + "\n.globl main" + "\nmain:";
         for (String linea : lineas) {
@@ -109,13 +134,14 @@ public class generadorMIPS {
             if (etiqueta.matches("^\\s*[t][0-9]+\\s*$")) {
                 String value = partesEquals[1].trim();
                 if (value.matches("^'[^']*'$")) { // En caso de ser una declaración de string.
-                    System.out.println("String Asignacion: " + linea);
+                    //Pendiente.
                 } else {
                     String almacenarEntero = "";
                     String input = partesEquals[1].trim();
                     String patternNumber = "\\s*-?\\d+\\s*"; // Regex un número entero.
                     boolean isNumber = input.matches(patternNumber);
                     if (isNumber) {
+                        Tcant++;
                         texto += "\naddi $sp, $sp, -4";
                         almacenarEntero += "\nli $v0, " + input;
                         almacenarEntero += "\nsw $v0, 0($sp)";
@@ -129,11 +155,12 @@ public class generadorMIPS {
                         String[] listOper = input.split("(?<=[\\+\\-\\*/])|(?=[\\+\\-\\*/])");
                         int pos1 = Integer.parseInt(listOper[0].replaceAll("\\D", ""));
                         int pos2 = Integer.parseInt(listOper[2].replaceAll("\\D", ""));
-                        pos1 = pos1 * 4;
-                        pos2 = pos2 * 4;
+                        pos1 = (Tcant * 4) - pos1 * 4;
+                        pos2 = (Tcant * 4) - pos2 * 4;
+                        Tcant++;
                         //
-                        almacenarOperacion += "\nlw $t0, " + pos1 + "($sp) ";
-                        almacenarOperacion += "\nlw $t1, " + pos2 + "($sp) ";
+                        almacenarOperacion += "\nlw $t0, " + (pos1 * - 1) + "($sp) ";
+                        almacenarOperacion += "\nlw $t1, " + (pos2 * - 1) + "($sp) ";
 
                         if (listOper[1].equals("+")) {
                             almacenarOperacion += "\nadd $t2, $t0, $t1";
@@ -160,7 +187,7 @@ public class generadorMIPS {
         return texto;
     }
 
-    public String comparacionesIF(String[] partes){
+    public String comparacionesIF(String[] partes) { 
         String texto = "";  
         if (partes[0].equals("if")) { // Manejar condicionales (if)
             if (partes.length == 4 && partes[2].equals("goto")) { // Caso `if t2 goto label`
@@ -181,11 +208,11 @@ public class generadorMIPS {
                     int pos1 = Integer.parseInt(var1.replaceAll("\\D", ""));
                     int pos2 = Integer.parseInt(var2.replaceAll("\\D", ""));
 
-                    pos1 = pos1 * 4;
-                    pos2 = pos2 * 4;
+                    pos1 = (Tcant * 4) -  pos1 * 4;
+                    pos2 = (Tcant * 4) -  pos2 * 4;
 
-                    texto += "\nlw $t0, " + pos1 + "($sp)";
-                    texto += "\nlw $t1, " + pos2 + "($sp)";
+                    texto += "\nlw $t0, " + (pos1 * - 1) + "($sp)";
+                    texto += "\nlw $t1, " + (pos2 * - 1) + "($sp)";
 
                     switch (operator) {
                         case "==":
